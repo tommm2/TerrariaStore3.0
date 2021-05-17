@@ -3,7 +3,7 @@
       <Loading :isLoading="isLoading"/>
       <a href="#" class="cart-background" data-toggle="modal" data-target="#cartModal">
             <img src="@/assets/image/cart-object.gif" alt="cart-icon">
-            <div class="cart-mark">
+            <div v-if="cartNum > 0" class="cart-mark">
                 {{ cartNum }}
             </div>
       </a>
@@ -140,10 +140,7 @@ export default {
         bottom: 3%;
         z-index: 1000;
         img{
-            width: 80px;
-            @media (max-width:500px) {
-                width: 60px;
-            }
+            width: 70px;
         }
         .cart-mark{
             color: #fff;
@@ -152,13 +149,12 @@ export default {
             border: 3px solid #fff;
             top: 0;
             right:10px;
-            width: 40px;
+            width: 35px;
             background: #DC3545;
             padding: 3px;
             display: flex;
             justify-content: center;
             @media (max-width:768px) {
-                width: 30px;
                 top:0;
                 right: 5px;
             }
