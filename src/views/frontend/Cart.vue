@@ -1,6 +1,5 @@
 <template>
     <div>
-      <Loading :isLoading="isLoading"/>
       <a href="#" class="cart-background" data-toggle="modal" data-target="#cartModal">
             <img src="@/assets/image/cart-object.gif" alt="cart-icon">
             <div v-if="cartNum > 0" class="cart-mark">
@@ -73,18 +72,13 @@
     </div>
 </template>
 <script>
-import Loading from '@/components/Loading.vue'
 export default {
   data () {
     return {
       coupon_code: '',
-      isLoading: false,
       cartNum: '',
       cartData: {}
     }
-  },
-  components: {
-    Loading
   },
   methods: {
     getCartList () {
@@ -97,10 +91,10 @@ export default {
     delCart (id) {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.delete(api).then((res) => {
         vm.getCartList()
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     enterCoupon () {
@@ -109,6 +103,7 @@ export default {
       const code = {
         code: vm.coupon_code
       }
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.post(api, { data: code }).then((res) => {
         if (res.data.success) {
           vm.$bus.$emit('message:push', '已套用優惠卷:)', 'primary')
@@ -116,6 +111,7 @@ export default {
           vm.$bus.$emit('message:push', '還敢亂打優惠碼', 'danger')
         }
         vm.getCartList()
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     getCartNum (num, data) {

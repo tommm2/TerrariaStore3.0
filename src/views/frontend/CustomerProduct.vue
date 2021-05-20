@@ -1,7 +1,5 @@
 <template>
     <div class="bg-light">
-        <Loading :isLoading="isLoading"/>
-
         <div class="banner d-flex justify-content-center align-items-end">
             <div class="typing-text mb-5">
                 Hope you enjoy your shopping.
@@ -19,23 +17,23 @@
             <div class="row justify-content-center">
                 <section class="col-sm-12 col-lg-3 pb-lg-0 pb-sm-3">
                     <ul class="product-menu d-sm-flex justify-content-center  flex-wrap">
-                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '所有商品'" :class="{'active':focus === '所有商品'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategroy('所有商品')" :class="{'active':focus === '所有商品'}">
                             <img src="@/assets/image/menu-1.png" alt="all-product">
                             <span class="d-lg-inline d-sm-block">所有商品</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '熱門商品'" :class="{'active':focus === '熱門商品'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategroy('熱門商品')" :class="{'active':focus === '熱門商品'}">
                             <img src="@/assets/image/menu-2.png" alt="hot-product">
                             <span class="d-lg-inline d-sm-block">熱門商品</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '時尚套裝'" :class="{'active':focus === '時尚套裝'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategroy('時尚套裝')" :class="{'active':focus === '時尚套裝'}">
                             <img src="@/assets/image/menu-3.png" alt="fashion-suit">
                             <span  class="d-lg-inline d-sm-block">時尚套裝</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '泰拉系列'" :class="{'active':focus === '泰拉系列'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategroy('泰拉系列')" :class="{'active':focus === '泰拉系列'}">
                             <img src="@/assets/image/menu-4.png" alt="terraria-series">
                             <span class="d-lg-inline d-sm-block">泰拉系列</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '召喚系列'" :class="{'active':focus === '召喚系列'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategroy('召喚系列')" :class="{'active':focus === '召喚系列'}">
                             <img src="@/assets/image/menu-5.png" alt="summon-series">
                             <span class="d-lg-inline d-sm-block">召喚系列</span>
                         </li>
@@ -51,7 +49,7 @@
                                     <img class="pic-1 p-5" :src="item.imageUrl" :alt="item.title" @click="getSingleItem(item)">
                                     <ul class="product-links">
                                         <li>
-                                            <a href="#" @click.prevent="addToCart(item.id)">
+                                            <a href="#" @click.prevent="addToCart(item)">
                                             <i class="fa fa-shopping-bag"></i>
                                             加入購物車
                                             </a>
@@ -73,7 +71,7 @@
                                     </div>
                                 </div>
                             </div>
-                         </div>
+                        </div>
                     </div>
                 </section>
                <Pagination class="mt-3 " v-if="focus === '所有商品'"  :pages="pagination" @handle="getCart"/>
@@ -83,21 +81,19 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination.vue'
-import Loading from '@/components/Loading.vue'
 export default {
   data () {
     return {
-      isLoading: false,
       products: [],
       allProduct: [],
       pagination: {},
       filterProduct: [],
-      focus: '所有商品'
+      focus: '所有商品',
+      cartsData: JSON.parse(localStorage.getItem('cartData')) || []
     }
   },
   components: {
-    Pagination,
-    Loading
+    Pagination
   },
   computed: {
     filters () {
@@ -110,52 +106,91 @@ export default {
     }
   },
   methods: {
+    getCategroy (sort) {
+      const vm = this
+      vm.$route.params.category = sort
+      vm.focus = sort
+      vm.$router.push(`/customerProduct/${sort}`)
+    },
     getCart (page = 1) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${page}`
       const vm = this
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.get(api).then((res) => {
         vm.products = res.data.products
         vm.pagination = res.data.pagination
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     getAllItem () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`
       const vm = this
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.get(api).then((res) => {
         vm.allProduct = res.data.products
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     getSingleItem (item) {
       const vm = this
       vm.$router.push(`/viewMore/${item.id}`)
     },
-    addToCart (id, qty = 1) {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
+    addToCart (item, qty = 1) {
       const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
+      const cacheCarID = []
       const cart = {
-        product_id: id,
+        product_id: item.id,
         qty: qty
       }
-      vm.isLoading = true
+      vm.cartsData.forEach((data) => {
+        cacheCarID.push(data.product_id)
+      })
+      if (cacheCarID.indexOf(item.id) === -1) {
+        const cartList = {
+          product_id: item.id,
+          qty: 1,
+          title: item.title,
+          origin_price: item.origin_price,
+          price: item.price,
+          imageUrl: item.imageUrl
+        }
+        vm.cartsData.push(cartList)
+        localStorage.setItem('cartData', JSON.stringify(vm.cartsData))
+      } else {
+        let cacheItem = {}
+        vm.cartsData.forEach((data, index) => {
+          if (data.product_id === item.id) {
+            let { qty } = data
+            cacheItem = {
+              product_id: item.id,
+              qty: qty += 1,
+              title: item.title,
+              origin_price: item.origin_price,
+              price: item.price,
+              imageUrl: item.imageUrl
+            }
+          }
+          vm.cartsData.splice(index, 1)
+        })
+        vm.cartsData.push(cacheItem)
+        localStorage.setItem('cartData', JSON.stringify(vm.cartsData))
+      }
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.post(api, { data: cart }).then((res) => {
         if (res.data.success) {
           vm.$bus.$emit('message:push', res.data.message, 'primary')
         }
         vm.getCartList()
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     getCartList () {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.get(api).then((res) => {
-        vm.isLoading = false
-        vm.cart = res.data.data
+        vm.$store.dispatch('updateLoading', false)
         vm.$bus.$emit('getCartNum', res.data.data.carts.length, res.data.data)
       })
     }
@@ -165,6 +200,7 @@ export default {
     vm.$bus.$emit('getRoute', vm.$route.path)
     vm.getCart()
     vm.getAllItem()
+    vm.$route.params.category = '所有商品'
   }
 }
 </script>

@@ -1,17 +1,17 @@
 <template>
     <div>
-        <Loading :isLoading="isLoading"/>
         <div class="wrap">
-            <div class="container p-5">
-                <nav aria-label="breadcrumb">
+            <div class="container">
+                <div class="product-container">
+                  <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><router-link :to="{name:'CustomerHome'}">首頁</router-link></li>
                         <li class="breadcrumb-item"><router-link :to="{name:'CustomerProduct'}">所有商品</router-link></li>
                         <li class="breadcrumb-item active" aria-current="page">{{product.title}}</li>
                     </ol>
-                </nav>
-                <div class="row">
-                    <div class="col-lg-6 col-md-12 p-3 mr-lg-5 d-flex flex-column align-items-center border ">
+                  </nav>
+                  <div class="row justify-content-around px-3">
+                    <div class="col-lg-6 col-md-12 p-3 d-flex flex-column align-items-center border">
                         <div class="product-image">
                             <img width="150" :src="product.imageUrl" :alt="product.title">
                         </div>
@@ -26,9 +26,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5 col-sm-12 d-flex mt-lg-0 mt-sm-3 flex-column p-5 border">
-                        <h5 class="font-weight-bold pb-3 border-bottom">{{product.title}}<span class="title-span align-self-center d-sm-inline-block ml-2">{{product.category}}</span></h5>
-                        <div class="price-group pt-4">
+                    <div class="col-lg-5 col-sm-12 d-flex flex-column border mt-lg-0 mt-sm-3">
+                        <h5 class="font-weight-bold py-3 border-bottom">{{product.title}}<span class="title-span align-self-center d-sm-inline-block ml-2">{{product.category}}</span></h5>
+                        <div class="price-group pt-3">
                             <del class="origin-price text-secondary" v-if="product.origin_price !== product.price"> 原價 {{product.origin_price | currency}}</del>
                             <p class="price" v-if="product.origin_price !== product.price">售價 {{product.price | currency}}</p>
                             <p class="price" v-if="product.origin_price === product.price">售價 {{product.price | currency}}</p>
@@ -39,24 +39,23 @@
                                 選購{{num}}{{product.unit}}
                             </option>
                         </select>
-                        <button type="button" v-if="product.num > 0" @click="addToCart(product.id,product.num)" class=" btn btn-primary mt-3 text-light font-weight-bold">加入購物車</button>
+                        <button type="button" v-if="product.num > 0" @click="addToCart(product,product.num)" class=" btn btn-primary mt-3 text-light font-weight-bold">加入購物車</button>
                         <button type="button" v-else disabled class=" btn btn-primary mt-3 text-light font-weight-bold">加入購物車</button>
-                        <span class="total mt-3 mb-3 border-bottom">
+                        <span class="total py-3 border-bottom">
                             小計: {{product.num * product.price | currency}}
                         </span>
                     </div>
+                  </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-import Loading from '@/components/Loading.vue'
 export default {
   data () {
     return {
       product: [],
-      isLoading: false,
       demo: [
         {
           title: '彩虹貓之刃',
@@ -133,29 +132,26 @@ export default {
       ]
     }
   },
-  components: {
-    Loading
-  },
   methods: {
     getSingleItem () {
       const vm = this
       const id = vm.$route.params.id
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.get(api).then((res) => {
         vm.product = res.data.product
         vm.$set(vm.product, 'num', 0)
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     },
-    addToCart (id, qty = 1) {
+    addToCart (item, qty = 1) {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
       const cart = {
-        product_id: id,
+        product_id: item.id,
         qty
       }
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.post(api, { data: cart }).then((res) => {
         if (res.data.success) {
           vm.$bus.$emit('message:push', res.data.message, 'primary')
@@ -163,7 +159,7 @@ export default {
           vm.$bus.$emit('message:push', res.data.message, 'danger')
         }
         vm.getCartList()
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     getCartList () {
@@ -196,14 +192,17 @@ export default {
            }
        }
        .container{
-            background: rgba(0, 0, 0, 0.7);
-            box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-            border-radius: 20px;
+            .product-container{
+              background: rgba(0, 0, 0, 0.7);
+              box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+              border-radius: 20px;
+              padding: 16px;
+            }
             .product-content{
                 border-top: 1px solid #fff;
                 padding-top: 20px;
                 p{
-                    font-size: 20px;
+                    font-size: 16px;
                     color:#fff;
                 }
             }

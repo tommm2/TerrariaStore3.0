@@ -2,7 +2,6 @@
   <div>
     <Alert/>
     <Navbar class="fixed-top"/>
-    <Loading :isLoading="isLoading"/>
     <div class="wrap">
       <div class="container">
         <div class="row justify-content-center mb-3">
@@ -31,27 +30,24 @@
 <script>
 import Alert from '@/components/AlertMessage.vue'
 import Navbar from './CustomerNavbar.vue'
-import Loading from '@/components/Loading.vue'
 export default {
   components: {
     Alert,
-    Navbar,
-    Loading
+    Navbar
   },
   data () {
     return {
       user: {
         username: '',
         password: ''
-      },
-      isLoading: false
+      }
     }
   },
   methods: {
     signIn () {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/admin/signin`
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.post(api, vm.user).then((res) => {
         if (res.data.success) {
           const token = res.data.token
@@ -62,7 +58,7 @@ export default {
         } else {
           vm.$bus.$emit('message:push', res.data.message, 'danger')
         }
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     }
   }

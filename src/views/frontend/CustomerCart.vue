@@ -1,11 +1,10 @@
 <template>
     <div>
-        <Loading :isLoading="isLoading"/>
         <div class="wrap">
-            <div class="container p-lg-5 pt-sm-5">
+            <div class="container pt-3 px-4">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-sm-12 mb-sm-5 mb-lg-0 pb-4" v-if="cart.carts">
-                        <stepBar :status="status"></stepBar>
+                        <StepBar class="pt-5" :status="status" />
                         <h5 class="text-center pb-4 font-weight-bold">購物車列表</h5>
                         <div class="table-list" v-if="cart.carts.length !== 0">
                             <table  class="table text-white">
@@ -58,7 +57,7 @@
                         <h5 class="text-center pb-4 font-weight-bold">買家資訊</h5>
                         <form  @submit.prevent="createOrder">
                             <div class="form-group">
-                                <label for="email">收件人電子郵件</label>
+                                <label for="email">Email</label>
                                 <input v-model="form.user.email" :class="{'invalid':errors.has('email')}" v-validate="'required|email'" class="w-100" name="email" id="email" type="email" placeholder="請輸入email">
                                 <span v-if="errors.has('email')" class="text-danger">
                                     * {{errors.first('email')}}
@@ -101,16 +100,13 @@
 </template>
 <script>
 import StepBar from '@/views/frontend/StepBar.vue'
-import Loading from '@/components/Loading.vue'
 export default {
   components: {
-    StepBar,
-    Loading
+    StepBar
   },
   data () {
     return {
       cart: [],
-      isLoading: false,
       delLoading: false,
       coupon_code: '',
       form: {
@@ -129,9 +125,9 @@ export default {
     getCartList () {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.get(api).then((res) => {
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
         vm.cart = res.data.data
         vm.$bus.$emit('getCartNum', res.data.data.carts.length, res.data.data)
       })
@@ -142,7 +138,7 @@ export default {
       const code = {
         code: vm.coupon_code
       }
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.post(api, { data: code }).then((res) => {
         if (res.data.success) {
           vm.$bus.$emit('message:push', '已套用優惠卷:)', 'primary')
@@ -150,13 +146,13 @@ export default {
           vm.$bus.$emit('message:push', '還敢亂打優惠碼', 'danger')
         }
         vm.getCartList()
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     delCart (id) {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.delete(api).then((res) => {
         if (res.data.success) {
           vm.$bus.$emit('message:push', '商品刪除成功', 'primary')
@@ -164,7 +160,7 @@ export default {
           vm.$bus.$emit('message:push', '商品刪除失敗', 'danger')
         }
         vm.getCartList()
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     createOrder () {
@@ -196,10 +192,13 @@ export default {
         background-image: url('../../assets/image/tree-bg.jpg');
         background-repeat: no-repeat;
         background-size: cover;
-        padding: 200px 0;
-        .container{
+        padding: 100px 0;
+        .row{
            background:rgba(0,0,0,0.8);
            border-radius: 10px;
+           h5{
+            font-size: 30px;
+          }
         }
     }
     .table-list{
