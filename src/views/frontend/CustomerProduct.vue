@@ -17,23 +17,23 @@
             <div class="row justify-content-center">
                 <section class="col-sm-12 col-lg-3 pb-lg-0 pb-sm-3">
                     <ul class="product-menu d-sm-flex justify-content-center  flex-wrap">
-                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategroy('所有商品')" :class="{'active':focus === '所有商品'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '所有商品'" :class="{'active':focus === '所有商品'}">
                             <img src="@/assets/image/menu-1.png" alt="all-product">
                             <span class="d-lg-inline d-sm-block">所有商品</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategroy('熱門商品')" :class="{'active':focus === '熱門商品'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '熱門商品'" :class="{'active':focus === '熱門商品'}">
                             <img src="@/assets/image/menu-2.png" alt="hot-product">
                             <span class="d-lg-inline d-sm-block">熱門商品</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategroy('時尚套裝')" :class="{'active':focus === '時尚套裝'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '時尚套裝'" :class="{'active':focus === '時尚套裝'}">
                             <img src="@/assets/image/menu-3.png" alt="fashion-suit">
                             <span  class="d-lg-inline d-sm-block">時尚套裝</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategroy('泰拉系列')" :class="{'active':focus === '泰拉系列'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '泰拉系列'" :class="{'active':focus === '泰拉系列'}">
                             <img src="@/assets/image/menu-4.png" alt="terraria-series">
                             <span class="d-lg-inline d-sm-block">泰拉系列</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategroy('召喚系列')" :class="{'active':focus === '召喚系列'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '召喚系列'" :class="{'active':focus === '召喚系列'}">
                             <img src="@/assets/image/menu-5.png" alt="summon-series">
                             <span class="d-lg-inline d-sm-block">召喚系列</span>
                         </li>
@@ -106,12 +106,6 @@ export default {
     }
   },
   methods: {
-    getCategroy (sort) {
-      const vm = this
-      vm.$route.params.category = sort
-      vm.focus = sort
-      vm.$router.push(`/customerProduct/${sort}`)
-    },
     getCart (page = 1) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${page}`
       const vm = this
