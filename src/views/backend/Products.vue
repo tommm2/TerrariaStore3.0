@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Loading :isLoading="isLoading"/>
         <div class="container">
             <div class="text-right">
                 <button class="btn btn-primary text-white" @click="showModal(true)">
@@ -176,11 +175,9 @@
 <script>
 import $ from 'jquery'
 import Pagination from '@/components/Pagination.vue'
-import Loading from '@/components/Loading.vue'
 export default {
   components: {
-    Pagination,
-    Loading
+    Pagination
   },
   data () {
     return {
@@ -198,7 +195,6 @@ export default {
       pagination: {},
       delItem: {},
       isNew: false,
-      isLoading: false,
       status: {
         filesLoading: false
       }
@@ -208,7 +204,7 @@ export default {
     getProduct (page = 1) {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products?page=${page}`
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.get(api).then((res) => {
         if (res.data.success) {
           vm.products = res.data.products
@@ -216,7 +212,7 @@ export default {
         } else {
           vm.$bus.$emit('message:push', res.data.message, 'danger')
         }
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     showModal (isNew, item) {
@@ -243,6 +239,7 @@ export default {
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.temProduct.id}`
         ajaxMethod = 'put'
       }
+      vm.$store.dispatch('updateLoading', true)
       vm.$http[ajaxMethod](api, { data: vm.temProduct }).then((res) => {
         if (res.data.success) {
           vm.products = res.data.products
@@ -252,11 +249,13 @@ export default {
         } else {
           vm.$bus.$emit('message:push', res.data.message, 'danger')
         }
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     delProduct (item) {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${item.id}`
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.delete(api, { data: vm.temProduct }).then((res) => {
         if (res.data.success) {
           vm.delItem = {}
@@ -267,6 +266,7 @@ export default {
         } else {
           vm.$bus.$emit('message:push', res.data.message, 'danger')
         }
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     uploadFile () {

@@ -47,7 +47,6 @@ import $ from 'jquery'
 export default {
   data () {
     return {
-      isLoading: false,
       isToggle: false
     }
   },
@@ -55,12 +54,12 @@ export default {
     signOut () {
       const api = `${process.env.VUE_APP_APIPATH}/logout`
       const vm = this
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.post(api).then((res) => {
         if (res.data.success) {
           vm.$router.push('/login')
         }
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     }
   },

@@ -124,11 +124,9 @@
 <script>
 import $ from 'jquery'
 import Pagination from '@/components/Pagination.vue'
-import Loading from '@/components/Loading.vue'
 export default {
   components: {
-    Pagination,
-    Loading
+    Pagination
   },
   props: {
     config: Object
@@ -146,8 +144,7 @@ export default {
       pagination: {},
       delItem: {},
       due_date: new Date(),
-      isNew: false,
-      isLoading: false
+      isNew: false
     }
   },
   watch: {
@@ -173,10 +170,10 @@ export default {
     getCoupons (page = 1) {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${page}`
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       this.$http.get(api, vm.tempProduct).then((res) => {
         vm.coupons = res.data.coupons
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
         vm.pagination = res.data.pagination
       })
     },
@@ -188,7 +185,7 @@ export default {
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`
         ajaxMethod = 'put'
       }
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.due_date = new Date(vm.tempCoupon.due_date * 1000)
       vm.$http[ajaxMethod](api, { data: vm.tempCoupon }).then((res) => {
         if (res.data.success) {
@@ -198,7 +195,7 @@ export default {
         } else {
           vm.$bus.$emit('message:push', res.data.message, 'danger')
         }
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     },
     delCouponModal (item) {
@@ -209,18 +206,17 @@ export default {
     delCoupon (item) {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${item.id}`
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.delete(api).then((res) => {
         if (res.data.success) {
           vm.coupons = res.data.coupons
           vm.$bus.$emit('message:push', res.data.message, 'success')
-          vm.isLoading = false
           vm.getCoupons()
           $('#delCouponModal').modal('hide')
         } else {
           vm.$bus.$emit('message:push', res.data.message, 'danger')
-          vm.isLoading = false
         }
+        vm.$store.dispatch('updateLoading', false)
       })
     }
   },

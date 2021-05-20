@@ -1,6 +1,5 @@
 <template>
   <div>
-        <Loading :isLoading="isLoading"/>
         <div class="container">
           <table class="table mt-5">
             <thead class="text-white bg-dark">
@@ -41,29 +40,26 @@
 
 <script>
 import Pagination from '@/components/Pagination.vue'
-import Loading from '@/components/Loading.vue'
 export default {
   data () {
     return {
       orders: {},
       isNew: false,
-      pagination: {},
-      isLoading: false
+      pagination: {}
     }
   },
   components: {
-    Pagination,
-    Loading
+    Pagination
   },
   methods: {
     getOrders (page = 1) {
       const vm = this
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.get(url, vm.tempProduct).then((response) => {
         vm.orders = response.data.orders
         vm.pagination = response.data.pagination
-        vm.isLoading = false
+        vm.$store.dispatch('updateLoading', false)
       })
     }
   },
