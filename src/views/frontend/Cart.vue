@@ -148,12 +148,12 @@ export default {
                 white-space: nowrap;
                 text-align: center;
                 padding: 3px;
-                i{
-                    cursor: pointer;
-                    transition: color .3s ease;
-                    &:hover{
-                        color: #8fc866;
-                    }
+            }
+            i{
+                cursor: pointer;
+                transition: color .3s ease;
+                &:hover{
+                    color: #8fc866;
                 }
             }
         }
