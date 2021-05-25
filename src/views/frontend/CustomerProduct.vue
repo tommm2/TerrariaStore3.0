@@ -17,25 +17,25 @@
             <div class="row justify-content-center">
                 <section class="col-sm-12 col-lg-3 pb-lg-0 pb-sm-3">
                     <ul class="product-menu d-sm-flex justify-content-center  flex-wrap">
-                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '所有商品'" :class="{'active':focus === '所有商品'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('所有商品')" :class="{'active':focus === '所有商品'}">
                             <img src="@/assets/image/menu-1.png" alt="all-product">
-                            <span class="d-lg-inline d-sm-block">所有商品</span>
+                            <span class="ml-2 d-lg-inline d-sm-block">所有商品</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '熱門商品'" :class="{'active':focus === '熱門商品'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('熱門商品')" :class="{'active':focus === '熱門商品'}">
                             <img src="@/assets/image/menu-2.png" alt="hot-product">
-                            <span class="d-lg-inline d-sm-block">熱門商品</span>
+                            <span class="ml-2 d-lg-inline d-sm-block">熱門商品</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '時尚套裝'" :class="{'active':focus === '時尚套裝'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('時尚套裝')" :class="{'active':focus === '時尚套裝'}">
                             <img src="@/assets/image/menu-3.png" alt="fashion-suit">
-                            <span  class="d-lg-inline d-sm-block">時尚套裝</span>
+                            <span  class="ml-2 d-lg-inline d-sm-block">時尚套裝</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '泰拉系列'" :class="{'active':focus === '泰拉系列'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('泰拉系列')" :class="{'active':focus === '泰拉系列'}">
                             <img src="@/assets/image/menu-4.png" alt="terraria-series">
-                            <span class="d-lg-inline d-sm-block">泰拉系列</span>
+                            <span class="ml-2 d-lg-inline d-sm-block">泰拉系列</span>
                         </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="focus = '召喚系列'" :class="{'active':focus === '召喚系列'}">
+                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('召喚系列')" :class="{'active':focus === '召喚系列'}">
                             <img src="@/assets/image/menu-5.png" alt="summon-series">
-                            <span class="d-lg-inline d-sm-block">召喚系列</span>
+                            <span class="ml-2 d-lg-inline d-sm-block">召喚系列</span>
                         </li>
                     </ul>
                 </section>
@@ -80,6 +80,7 @@
     </div>
 </template>
 <script>
+
 import Pagination from '@/components/Pagination.vue'
 export default {
   data () {
@@ -88,8 +89,7 @@ export default {
       allProduct: [],
       pagination: {},
       filterProduct: [],
-      focus: '所有商品',
-      cartsData: JSON.parse(localStorage.getItem('cartData')) || []
+      focus: '所有商品'
     }
   },
   components: {
@@ -103,6 +103,9 @@ export default {
         return vm.products
       }
       return vm.filterProduct
+    },
+    cart () {
+      return this.$store.state.cart
     }
   },
   methods: {
@@ -116,9 +119,17 @@ export default {
         vm.$store.dispatch('updateLoading', false)
       })
     },
-    getAllItem () {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`
+    getCategory (item) {
       const vm = this
+      vm.focus = item
+    },
+    getAllItem () {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`
+      const temCategory = vm.$route.params.category
+      if (temCategory) {
+        vm.focus = temCategory
+      }
       vm.$store.dispatch('updateLoading', true)
       vm.$http.get(api).then((res) => {
         vm.allProduct = res.data.products
@@ -131,62 +142,17 @@ export default {
     },
     addToCart (item, qty = 1) {
       const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      const cacheCarID = []
-      const cart = {
-        product_id: item.id,
-        qty: qty
-      }
-      vm.cartsData.forEach((data) => {
-        cacheCarID.push(data.product_id)
-      })
-      if (cacheCarID.indexOf(item.id) === -1) {
-        const cartList = {
-          product_id: item.id,
-          qty: 1,
-          title: item.title,
-          origin_price: item.origin_price,
-          price: item.price,
-          imageUrl: item.imageUrl
-        }
-        vm.cartsData.push(cartList)
-        localStorage.setItem('cartData', JSON.stringify(vm.cartsData))
+      const target = vm.cart.carts.filter((data) => data.product_id === item.id)
+      if (target.length > 0) {
+        const sameCartItem = target[0]
+        const originQty = sameCartItem.qty
+        const originCartId = sameCartItem.id
+        const originProductId = sameCartItem.product.id
+        const newQty = originQty + qty
+        vm.$store.dispatch('updateQty', { originCartId, originProductId, newQty })
       } else {
-        let cacheItem = {}
-        vm.cartsData.forEach((data, index) => {
-          if (data.product_id === item.id) {
-            let { qty } = data
-            cacheItem = {
-              product_id: item.id,
-              qty: qty += 1,
-              title: item.title,
-              origin_price: item.origin_price,
-              price: item.price,
-              imageUrl: item.imageUrl
-            }
-          }
-          vm.cartsData.splice(index, 1)
-        })
-        vm.cartsData.push(cacheItem)
-        localStorage.setItem('cartData', JSON.stringify(vm.cartsData))
+        vm.$store.dispatch('addToCart', { item, qty })
       }
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.post(api, { data: cart }).then((res) => {
-        if (res.data.success) {
-          vm.$bus.$emit('message:push', res.data.message, 'primary')
-        }
-        vm.getCartList()
-        vm.$store.dispatch('updateLoading', false)
-      })
-    },
-    getCartList () {
-      const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.get(api).then((res) => {
-        vm.$store.dispatch('updateLoading', false)
-        vm.$bus.$emit('getCartNum', res.data.data.carts.length, res.data.data)
-      })
     }
   },
   created () {
@@ -194,7 +160,6 @@ export default {
     vm.$bus.$emit('getRoute', vm.$route.path)
     vm.getCart()
     vm.getAllItem()
-    vm.$route.params.category = '所有商品'
   }
 }
 </script>

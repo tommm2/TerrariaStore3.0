@@ -66,7 +66,7 @@
                     <img src="@/assets/image/news-3.png" alt="Toro-suit">
                     <p>新推出與Sony合作的Toro時裝，可謂日本吉祥物的代名詞，穿上它包準你當上本月最佳吉祥物!</p>
                 </div>
-                <button @click="goBuySuit()" class="mt-3"><i class="fas fa-long-arrow-alt-right mr-2"></i>前往購買</button>
+                <button @click="goBuySuit('時尚套裝')" class="mt-3"><i class="fas fa-long-arrow-alt-right mr-2"></i>前往購買</button>
             </div>
         </div>
         <div class="other-info container p-5 text-lg-center text-center">
@@ -110,6 +110,7 @@
 </template>
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -162,35 +163,34 @@ export default {
         vm.$store.dispatch('updateLoading', false)
       })
     },
+    goBuySuit (item) {
+      const vm = this
+      vm.$router.push({
+        name: 'CustomerProduct',
+        params: { category: item }
+      })
+    },
     addToCart (item, qty = 1) {
       const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      const cart = {
-        product_id: item.id,
-        qty
+      const target = vm.cart.carts.filter((data) => data.product_id === item.id)
+      if (target.length > 0) {
+        const sameCartItem = target[0]
+        const originQty = sameCartItem.qty
+        const originCartId = sameCartItem.id
+        const originProductId = sameCartItem.product.id
+        const newQty = originQty + qty
+        vm.$store.dispatch('updateQty', { originCartId, originProductId, newQty })
+      } else {
+        vm.$store.dispatch('addToCart', { item, qty })
       }
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.post(api, { data: cart }).then((res) => {
-        if (res.data.success) {
-          vm.$bus.$emit('message:push', res.data.message, 'primary')
-        }
-        vm.getCartList()
-        vm.$store.dispatch('updateLoading', false)
-      })
     },
     getSingleItem (item) {
       const vm = this
       vm.$router.push(`/viewMore/${item.id}`)
-    },
-    getCartList () {
-      const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.get(api).then((res) => {
-        vm.$store.dispatch('updateLoading', false)
-        vm.$bus.$emit('getCartNum', res.data.data.carts.length, res.data.data)
-      })
     }
+  },
+  computed: {
+    ...mapGetters(['cart'])
   },
   created () {
     const vm = this

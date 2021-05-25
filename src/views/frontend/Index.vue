@@ -11,11 +11,13 @@
       </footer>
       <Cart v-if="route !== '/customerCart'"/>
       <Alert/>
+      <GoTop/>
   </div>
 </template>
 <script>
 import CustomerNavbar from './CustomerNavbar.vue'
 import CustomerFooter from './CustomerFooter.vue'
+import GoTop from '@/components/goTop.vue'
 import Cart from './Cart.vue'
 import Alert from '@/components/AlertMessage.vue'
 export default {
@@ -28,7 +30,8 @@ export default {
     CustomerNavbar,
     CustomerFooter,
     Alert,
-    Cart
+    Cart,
+    GoTop
   },
   created () {
     this.$bus.$on('getRoute', (route) => {

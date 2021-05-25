@@ -1,9 +1,9 @@
 <template>
     <div>
-      <a href="#" class="cart-background" data-toggle="modal" data-target="#cartModal">
+      <a v-if="cart.carts" href="#" class="cart-background" data-toggle="modal" data-target="#cartModal">
             <img src="@/assets/image/cart-object.gif" alt="cart-icon">
-            <div v-if="cartNum > 0" class="cart-mark">
-                {{ cartNum }}
+            <div v-if="cart.carts.length > 0"  class="cart-mark">
+                {{ cart.carts.length }}
             </div>
       </a>
       <div class="modal fade p-3" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModalLabel" aria-hidden="true">
@@ -16,8 +16,8 @@
                         </div>
                     </div>
                     <div class="body">
-                        <div class="col-sm-12" v-if="cartData.carts">
-                        <div v-if="cartData.carts.length !== 0" class="table-list">
+                        <div class="col-sm-12" v-if="cart.carts">
+                        <div v-if="cart.carts.length !== 0" class="table-list">
                             <table class="table text-white">
                                 <thead class="bg-primary">
                                     <th>品名</th>
@@ -26,7 +26,7 @@
                                     <th>刪除</th>
                                 </thead>
                                 <tbody>
-                                  <tr v-for="item in cartData.carts" :key="item.id">
+                                  <tr v-for="item in cart.carts" :key="item.id">
                                       <td>
                                         <img width="30" :src="item.product.imageUrl" :alt="item.product.title">
                                         <span class="d-md-inline d-sm-block">{{item.product.title }}</span>
@@ -34,7 +34,11 @@
                                         已套用優惠券
                                         </div>
                                       </td>
-                                      <td>{{item.qty}}/{{item.product.unit}}</td>
+                                      <td>
+                                        <i @click="changeQty(item.id, item.product.id, item.qty, false)" class="fas fa-minus mx-1"></i>
+                                        {{item.qty}}/{{item.product.unit}}
+                                        <i @click="changeQty(item.id, item.product.id, item.qty, true)" class="fas fa-plus mx-1"></i>
+                                      </td>
                                       <td>{{ item.final_total | currency}}</td>
                                       <td>
                                         <i class="fas fa-trash-alt" @click="delCart(item.id)"></i>
@@ -43,26 +47,26 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div v-if="cartData.carts.length === 0" class="no-item-res text-white text-center pt-3 font-weight-bold">
+                        <div v-if="cart.carts.length === 0" class="no-item-res text-white text-center pt-3 font-weight-bold">
                             <i class="fas fa-cart-arrow-down mr-2"></i>空無一物的購物車
                         </div>
                         <div class="price pt-3  d-flex justify-content-around font-weight-bold">
-                            <p class="text-muted">總計 {{cartData.total | currency}}</p>
-                            <p v-if="cartData.total !== cartData.final_total" class="text-success">折扣價 {{cartData.final_total | currency}}</p>
+                            <p class="text-muted">總計 {{cart.total | currency}}</p>
+                            <p v-if="cart.total !== cart.final_total" class="text-success">折扣價 {{cart.final_total | currency}}</p>
                         </div>
                         <div class="input-group mb-3 input-group-sm">
                             <input type="text" v-model="coupon_code" class="form-control" placeholder="請輸入優惠碼 ex:試試eee">
                             <div class="input-group-append">
-                                <button  v-if="coupon_code === ''" class="btn btn-outline-primary" type="button" disabled>
+                                <button  v-if="coupon_code === '' || cart.carts.length === 0" class="btn btn-outline-primary" type="button" disabled>
                                 套用優惠碼
                                 </button>
-                                <button v-else class="btn btn-primary" type="button" @click="enterCoupon()">
+                                <button v-else class="btn btn-primary" type="button" @click="enterCoupon(coupon_code)">
                                 套用優惠碼
                                 </button>
                             </div>
                             <button type="button" data-dismiss="modal" class="btn btn-danger mt-3 mb-3 col-sm-12">返回</button>
-                            <router-link v-if="cartData.carts.length > 0" data-dismiss="modal" type="btn" class="btn btn-primary col-sm-12 text-white" :to="{name:'CustomerCart'}">前往結帳</router-link>
-                            <router-link v-if="cartData.carts.length <= 0" data-dismiss="modal" type="btn" class="btn btn-primary col-sm-12 text-white" :to="{name:'CustomerProduct'}">前往購物</router-link>
+                            <router-link v-if="cart.carts.length > 0" data-dismiss="modal" type="btn" class="btn btn-primary col-sm-12 text-white" :to="{name:'CustomerCart'}">前往結帳</router-link>
+                            <router-link v-if="cart.carts.length <= 0" data-dismiss="modal" type="btn" class="btn btn-primary col-sm-12 text-white" :to="{name:'CustomerProduct'}">前往購物</router-link>
                         </div>
                     </div>
                     </div>
@@ -72,59 +76,33 @@
     </div>
 </template>
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      coupon_code: '',
-      cartNum: '',
-      cartData: {}
+      coupon_code: ''
     }
   },
   methods: {
-    getCartList () {
+    ...mapActions(['getCartList', 'enterCoupon', 'delCart']),
+    changeQty (id, productId, qty, calc) {
       const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      vm.$http.get(api).then((res) => {
-        vm.$bus.$emit('getCartNum', res.data.data.carts.length, res.data.data)
-      })
-    },
-    delCart (id) {
-      const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.delete(api).then((res) => {
-        vm.getCartList()
-        vm.$store.dispatch('updateLoading', false)
-      })
-    },
-    enterCoupon () {
-      const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`
-      const code = {
-        code: vm.coupon_code
+      let num
+      if (calc === true) {
+        num = qty + 1
+      } else if (qty === 1) {
+        num = 1
+      } else {
+        num = qty - 1
       }
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.post(api, { data: code }).then((res) => {
-        if (res.data.success) {
-          vm.$bus.$emit('message:push', '已套用優惠卷:)', 'primary')
-        } else {
-          vm.$bus.$emit('message:push', '還敢亂打優惠碼', 'danger')
-        }
-        vm.getCartList()
-        vm.$store.dispatch('updateLoading', false)
-      })
-    },
-    getCartNum (num, data) {
-      const vm = this
-      vm.cartNum = num
-      vm.cartData = data
+      vm.$store.dispatch('changeQty', { id, productId, num })
     }
+  },
+  computed: {
+    ...mapGetters(['cart'])
   },
   created () {
     const vm = this
-    vm.$bus.$on('getCartNum', (cartNum, cartData) => {
-      vm.getCartNum(cartNum, cartData)
-    })
     vm.getCartList()
   }
 }
@@ -167,6 +145,7 @@ export default {
                 border: none;
             }
             td {
+                white-space: nowrap;
                 text-align: center;
                 padding: 3px;
                 i{

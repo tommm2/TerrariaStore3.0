@@ -39,7 +39,7 @@
                                 選購{{num}}{{product.unit}}
                             </option>
                         </select>
-                        <button type="button" v-if="product.num > 0" @click="addToCart(product,product.num)" class=" btn btn-primary mt-3 text-light font-weight-bold">加入購物車</button>
+                        <button type="button" v-if="product.num > 0" @click="addToCart(product, product.num)" class=" btn btn-primary mt-3 text-light font-weight-bold">加入購物車</button>
                         <button type="button" v-else disabled class=" btn btn-primary mt-3 text-light font-weight-bold">加入購物車</button>
                         <span class="total py-3 border-bottom">
                             小計: {{product.num * product.price | currency}}
@@ -146,28 +146,26 @@ export default {
     },
     addToCart (item, qty = 1) {
       const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      const cart = {
-        product_id: item.id,
-        qty
+      const target = vm.cart.carts.filter((data) => data.product_id === item.id)
+      if (target.length > 0) {
+        const sameCartItem = target[0]
+        const originQty = sameCartItem.qty
+        const originCartId = sameCartItem.id
+        const originProductId = sameCartItem.product.id
+        const newQty = originQty + qty
+        vm.$store.dispatch('updateQty', { originCartId, originProductId, newQty })
+      } else {
+        vm.$store.dispatch('addToCart', { item, qty })
       }
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.post(api, { data: cart }).then((res) => {
-        if (res.data.success) {
-          vm.$bus.$emit('message:push', res.data.message, 'primary')
-        } else {
-          vm.$bus.$emit('message:push', res.data.message, 'danger')
-        }
-        vm.getCartList()
-        vm.$store.dispatch('updateLoading', false)
-      })
     },
     getCartList () {
       const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      vm.$http.get(api).then((res) => {
-        vm.$bus.$emit('getCartNum', res.data.data.carts.length, res.data.data)
-      })
+      vm.dispatch('getCartList')
+    }
+  },
+  computed: {
+    cart () {
+      return this.$store.state.cart
     }
   },
   created () {

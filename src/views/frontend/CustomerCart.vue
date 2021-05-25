@@ -25,7 +25,11 @@
                                             已套用優惠券
                                         </div>
                                     </td>
-                                    <td>{{ item.qty }}/{{ item.product.unit }}</td>
+                                    <td>
+                                      <i @click="changeQty(item.id, item.product.id, item.qty, false)" class="fas fa-minus mx-1"></i>
+                                      {{ item.qty }}/{{ item.product.unit }}
+                                      <i @click="changeQty(item.id, item.product.id, item.qty, true)" class="fas fa-plus mx-1"></i>
+                                    </td>
                                     <td>{{ item.final_total | currency}}</td>
                                     <td>
                                         <i @click="delCart(item.id)" class="fas fa-trash-alt"></i>
@@ -44,10 +48,10 @@
                         <div class="input-group mb-3">
                             <input type="text" v-model="coupon_code" class="form-control" placeholder="ex :試試eee">
                             <div class="input-group-append">
-                                <button disabled v-if="coupon_code === ''" class="btn btn-outline-primary" type="button">
+                                <button disabled v-if="coupon_code === '' || cart.carts.length === 0" class="btn btn-outline-primary" type="button">
                                 套用優惠碼
                                 </button>
-                                <button v-else class="btn btn-outline-primary" type="button" @click="enterCoupon()">
+                                <button v-else class="btn btn-outline-primary" type="button" @click="enterCoupon(coupon_code)">
                                 套用優惠碼
                                 </button>
                             </div>
@@ -100,14 +104,13 @@
 </template>
 <script>
 import StepBar from '@/views/frontend/StepBar.vue'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
     StepBar
   },
   data () {
     return {
-      cart: [],
-      delLoading: false,
       coupon_code: '',
       form: {
         user: {
@@ -122,47 +125,7 @@ export default {
     }
   },
   methods: {
-    getCartList () {
-      const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.get(api).then((res) => {
-        vm.$store.dispatch('updateLoading', false)
-        vm.cart = res.data.data
-        vm.$bus.$emit('getCartNum', res.data.data.carts.length, res.data.data)
-      })
-    },
-    enterCoupon () {
-      const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`
-      const code = {
-        code: vm.coupon_code
-      }
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.post(api, { data: code }).then((res) => {
-        if (res.data.success) {
-          vm.$bus.$emit('message:push', '已套用優惠卷:)', 'primary')
-        } else {
-          vm.$bus.$emit('message:push', '還敢亂打優惠碼', 'danger')
-        }
-        vm.getCartList()
-        vm.$store.dispatch('updateLoading', false)
-      })
-    },
-    delCart (id) {
-      const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.delete(api).then((res) => {
-        if (res.data.success) {
-          vm.$bus.$emit('message:push', '商品刪除成功', 'primary')
-        } else {
-          vm.$bus.$emit('message:push', '商品刪除失敗', 'danger')
-        }
-        vm.getCartList()
-        vm.$store.dispatch('updateLoading', false)
-      })
-    },
+    ...mapActions(['getCartList', 'delCart', 'enterCoupon']),
     createOrder () {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order`
@@ -175,10 +138,25 @@ export default {
             }
           })
         } else {
-          vm.$bus.$emit('message:push', '表單未填寫完整', 'danger')
+          vm.$store.dispatch('updateMessage', { msg: '表單建立失敗', status: 'danger' })
         }
       })
+    },
+    changeQty (id, productId, qty, calc) {
+      const vm = this
+      let num
+      if (calc === true) {
+        num = qty + 1
+      } else if (qty === 1) {
+        num = 1
+      } else {
+        num = qty - 1
+      }
+      vm.$store.dispatch('changeQty', { id, productId, num })
     }
+  },
+  computed: {
+    ...mapGetters(['cart'])
   },
   created () {
     const vm = this
@@ -207,10 +185,11 @@ export default {
         height: 300px;
         table{
             tr {
-                width: 100%;
-                border: none;
+              width: 100%;
+              border: none;
             }
             td {
+                white-space: nowrap;
                 text-align: center;
                 padding: 6px;
                 i{
@@ -284,9 +263,12 @@ export default {
     ::-webkit-scrollbar {
         width: 3px;
     }
+    ::-webkit-scrollbar-corner{
+        height: 3px;
+    }
     ::-webkit-scrollbar-thumb {
         background:#8fc866;
-        border-radius: 10px;
+        border-radius: 5px;
     }
     ::-webkit-scrollbar-thumb:hover {
         background: #8fc86693;
