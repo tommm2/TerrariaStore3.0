@@ -230,7 +230,7 @@ export default {
                 }
             }
             @media (min-width: 992px) {
-                position: sticky !important;
+                position: sticky;
                 top: 93px;
             }
         }
