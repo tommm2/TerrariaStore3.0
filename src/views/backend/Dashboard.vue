@@ -1,11 +1,11 @@
 <template>
-    <div class="wrap">
-            <Navbar class="fixed-top"/>
-            <Alert/>
-            <main>
-                <router-view/>
-            </main>
-    </div>
+  <div class="wrap">
+    <Navbar class="fixed-top"/>
+    <Alert/>
+    <main>
+      <router-view/>
+    </main>
+  </div>
 </template>
 <script>
 import Navbar from './Navbar.vue'

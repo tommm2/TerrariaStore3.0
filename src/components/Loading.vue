@@ -1,21 +1,21 @@
 <template>
-    <div>
-        <loading :active.sync="isLoading">
-            <template slot="default">
-                <img width="200" src="@/assets/image/loading-img.gif" alt="Loading">
-            </template>
-            <template slot="after">
-                <div class="wavy d-inline font-weight-bold">
-                    <span style="--i:1">加</span>
-                    <span style="--i:2">載</span>
-                    <span style="--i:3">中</span>
-                    <span style="--i:4">.</span>
-                    <span style="--i:5">.</span>
-                    <span style="--i:6">.</span>
-                </div>
-            </template>
-        </loading>
-    </div>
+  <div>
+    <loading :active.sync="isLoading">
+      <template slot="default">
+        <img width="200" src="@/assets/image/loading-img.gif" alt="Loading">
+      </template>
+      <template slot="after">
+        <div class="wavy d-inline font-weight-bold">
+          <span style="--i:1">加</span>
+          <span style="--i:2">載</span>
+          <span style="--i:3">中</span>
+          <span style="--i:4">.</span>
+          <span style="--i:5">.</span>
+          <span style="--i:6">.</span>
+        </div>
+      </template>
+    </loading>
+  </div>
 </template>
 <script>
 export default {
@@ -25,7 +25,6 @@ export default {
 <style lang="scss" scoped>
 .wavy{
     position: relative;
-    -webkit-box-reflect: below -12px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
     span{
         font-family: pixel;
         letter-spacing: 8px;

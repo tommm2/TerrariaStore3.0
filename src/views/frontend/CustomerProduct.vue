@@ -1,83 +1,73 @@
 <template>
-    <div class="bg-light">
-        <div class="banner d-flex justify-content-center align-items-end">
-            <div class="typing-text mb-5">
-                Hope you enjoy your shopping.
-            </div>
-        </div>
-        <div class="product container">
-            <nav class="pt-3" aria-label="breadcrumb">
-                 <ol class="breadcrumb bg-light">
-                    <li class="breadcrumb-item">
-                        <router-link :to="{name:'CustomerHome'}">首頁</router-link>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{focus}}</li>
-                </ol>
-            </nav>
-            <div class="row justify-content-center">
-                <section class="col-sm-12 col-lg-3 pb-lg-0 pb-sm-3">
-                    <ul class="product-menu d-sm-flex justify-content-center  flex-wrap">
-                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('所有商品')" :class="{'active':focus === '所有商品'}">
-                            <img src="@/assets/image/menu-1.png" alt="all-product">
-                            <span class="ml-2 d-lg-inline d-sm-block">所有商品</span>
-                        </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('熱門商品')" :class="{'active':focus === '熱門商品'}">
-                            <img src="@/assets/image/menu-2.png" alt="hot-product">
-                            <span class="ml-2 d-lg-inline d-sm-block">熱門商品</span>
-                        </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('時尚套裝')" :class="{'active':focus === '時尚套裝'}">
-                            <img src="@/assets/image/menu-3.png" alt="fashion-suit">
-                            <span  class="ml-2 d-lg-inline d-sm-block">時尚套裝</span>
-                        </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('泰拉系列')" :class="{'active':focus === '泰拉系列'}">
-                            <img src="@/assets/image/menu-4.png" alt="terraria-series">
-                            <span class="ml-2 d-lg-inline d-sm-block">泰拉系列</span>
-                        </li>
-                        <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('召喚系列')" :class="{'active':focus === '召喚系列'}">
-                            <img src="@/assets/image/menu-5.png" alt="summon-series">
-                            <span class="ml-2 d-lg-inline d-sm-block">召喚系列</span>
-                        </li>
-                    </ul>
-                </section>
-                <section class="col-sm-12 col-lg-9 text-center mb-3">
-                    <h5 class="menu-title font-weight-bold">{{focus}}</h5>
-                    <div class="row justify-conter-sm-center">
-                        <div class="col-md-6 col-lg-4 mt-2 mb-2" v-for="item in filters" :key="item.id">
-                            <div class="product-grid">
-                                <span class="badge">{{item.category}}</span>
-                                <div class="product-image">
-                                    <img class="pic-1 p-5" :src="item.imageUrl" :alt="item.title" @click="getSingleItem(item)">
-                                    <ul class="product-links">
-                                        <li>
-                                            <a href="#" @click.prevent="addToCart(item)">
-                                            <i class="fa fa-shopping-bag"></i>
-                                            加入購物車
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" @click.prevent="getSingleItem(item)">
-                                            <i class="fa fa-search"></i>
-                                            查看更多
-                                            </a>
-                                         </li>
-                                    </ul>
-                                </div>
-                                <div class="product-content">
-                                    <h3 class="title">{{item.title}}</h3>
-                                    <div class="price-group d-flex justify-content-center">
-                                        <del class="text-muted mr-2" v-if="item.origin_price !== item.price">{{item.origin_price | currency}}</del>
-                                        <div class="price" v-if="item.origin_price !== item.price">{{item.price | currency}}</div>
-                                        <div class="price" v-if="item.origin_price === item.price">{{item.origin_price | currency}}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-               <Pagination class="mt-3 " v-if="focus === '所有商品'"  :pages="pagination" @handle="getCart"/>
-            </div>
-        </div>
+  <div class="bg-light">
+    <div class="banner d-flex justify-content-center align-items-end">
+      <div class="typing-text mb-5">Hope you enjoy your shopping.</div>
     </div>
+    <div class="product container">
+      <nav class="pt-3" aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light">
+          <li class="breadcrumb-item"><router-link :to="{name:'CustomerHome'}">首頁</router-link></li>
+          <li class="breadcrumb-item active" aria-current="page">{{focus}}</li>
+        </ol>
+      </nav>
+      <div class="row justify-content-center">
+        <section class="col-sm-12 col-lg-3 pb-lg-0 pb-sm-3">
+          <ul class="product-menu d-sm-flex justify-content-center  flex-wrap">
+            <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('所有商品')" :class="{'active':focus === '所有商品'}">
+              <img src="@/assets/image/menu-1.png" alt="all-product">
+              <span class="ml-2 d-lg-inline d-sm-block">所有商品</span>
+            </li>
+            <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('熱門商品')" :class="{'active':focus === '熱門商品'}">
+              <img src="@/assets/image/menu-2.png" alt="hot-product">
+              <span class="ml-2 d-lg-inline d-sm-block">熱門商品</span>
+            </li>
+            <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('時尚套裝')" :class="{'active':focus === '時尚套裝'}">
+              <img src="@/assets/image/menu-3.png" alt="fashion-suit">
+              <span  class="ml-2 d-lg-inline d-sm-block">時尚套裝</span>
+            </li>
+            <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('泰拉系列')" :class="{'active':focus === '泰拉系列'}">
+              <img src="@/assets/image/menu-4.png" alt="terraria-series">
+              <span class="ml-2 d-lg-inline d-sm-block">泰拉系列</span>
+            </li>
+            <li class="col-lg-12 col-sm-4" @click.prevent="getCategory('召喚系列')" :class="{'active':focus === '召喚系列'}">
+              <img src="@/assets/image/menu-5.png" alt="summon-series">
+              <span class="ml-2 d-lg-inline d-sm-block">召喚系列</span>
+            </li>
+          </ul>
+        </section>
+        <section class="col-sm-12 col-lg-9 text-center mb-3">
+          <h5 class="menu-title font-weight-bold">{{focus}}</h5>
+          <div class="row justify-conter-sm-center">
+            <div class="col-md-6 col-lg-4 mt-2 mb-2" v-for="item in filters" :key="item.id">
+              <div class="product-grid" @click="getSingleItem(item)">
+                <span class="badge">{{item.category}}</span>
+                <div class="product-image">
+                  <img class="pic-1 p-5" :src="item.imageUrl" :alt="item.title">
+                  <ul class="product-links">
+                    <li>
+                      <a href="#" @click.prevent="addToCart(item)"><i class="fa fa-shopping-bag"></i>加入購物車</a>
+                    </li>
+                    <li>
+                      <a href="#" @click.prevent="getSingleItem(item)"><i class="fa fa-search"></i>查看更多</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="product-content">
+                  <h3 class="title">{{item.title}}</h3>
+                  <div class="price-group d-flex justify-content-center">
+                    <del class="text-muted mr-2" v-if="item.origin_price !== item.price">{{item.origin_price | currency}}</del>
+                    <div class="price" v-if="item.origin_price !== item.price">{{item.price | currency}}</div>
+                    <div class="price" v-if="item.origin_price === item.price">{{item.origin_price | currency}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <Pagination class="mt-3 " v-if="focus === '所有商品'"  :pages="pagination" @handle="getCart"/>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 
@@ -165,7 +155,7 @@ export default {
 </script>
 <style lang="scss" scoped>
     .banner{
-        background-image: url('../../assets/image/banner-2.png');
+        background-image: url('~@/assets/image/banner-2.png');
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -236,6 +226,7 @@ export default {
         }
     }
     .product-grid{
+        cursor: pointer;
         position: relative;
         border-radius: 10px;
         border: 1px solid #e7e7e7;

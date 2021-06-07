@@ -1,12 +1,12 @@
 <template>
-    <div>
-        <div class="wrap">
-            <div class="container pt-3 px-4">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 col-sm-12 mb-sm-5 mb-lg-0 pb-4" v-if="cart.carts">
-                        <StepBar class="pt-5" :status="status" />
-                        <h5 class="text-center pb-4 font-weight-bold">購物車列表</h5>
-                        <div class="table-list" v-if="cart.carts.length !== 0">
+  <div>
+    <div class="wrap">
+      <div class="container pt-3 px-4">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 col-sm-12 mb-sm-5 mb-lg-0 pb-4" v-if="cart.carts">
+            <StepBar class="pt-5" :status="status" />
+            <h5 class="text-center pb-4 font-weight-bold">購物車列表</h5>
+            <div class="table-list" v-if="cart.carts.length !== 0">
                             <table  class="table text-white">
                                 <thead class="bg-primary">
                                     <th>品名</th>
@@ -37,73 +37,63 @@
                                   </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div v-if="cart.carts.length === 0" class="no-item-res text-white text-center font-weight-bold">
-                            <i class="fas fa-cart-arrow-down mr-2"></i>空無一物的購物車
-                        </div>
-                        <div class="price pt-3  d-flex justify-content-around font-weight-bold">
-                            <p class="text-muted">總計 {{cart.total | currency}}</p>
-                            <p v-if="cart.total !== cart.final_total" class="text-success">折扣價 {{cart.final_total | currency}}</p>
-                        </div>
-                        <div class="input-group mb-3">
-                            <input type="text" v-model="coupon_code" class="form-control" placeholder="ex :試試eee">
-                            <div class="input-group-append">
-                                <button disabled v-if="coupon_code === '' || cart.carts.length === 0" class="btn btn-outline-primary" type="button">
-                                套用優惠碼
-                                </button>
-                                <button v-else class="btn btn-outline-primary" type="button" @click="enterCoupon(coupon_code)">
-                                套用優惠碼
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-sm-12">
-                        <h5 class="text-center pb-4 font-weight-bold">買家資訊</h5>
-                        <form  @submit.prevent="createOrder">
-                            <div class="form-group">
+            </div>
+            <div v-if="cart.carts.length === 0" class="no-item-res text-white text-center font-weight-bold">
+              <i class="fas fa-cart-arrow-down mr-2"></i>空無一物的購物車
+            </div>
+            <div class="price pt-3  d-flex justify-content-around font-weight-bold">
+              <p class="text-muted">總計 {{cart.total | currency}}</p>
+              <p v-if="cart.total !== cart.final_total" class="text-success">折扣價 {{cart.final_total | currency}}</p>
+            </div>
+            <div class="input-group mb-3">
+              <input type="text" v-model="coupon_code" class="form-control" placeholder="ex :試試eee">
+              <div class="input-group-append">
+                <button disabled v-if="coupon_code === '' || cart.carts.length === 0" class="btn btn-outline-primary" type="button">套用優惠碼</button>
+                <button v-else class="btn btn-outline-primary" type="button" @click="enterCoupon(coupon_code)">
+                  套用優惠碼
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 col-sm-12">
+            <h5 class="text-center pb-4 font-weight-bold">買家資訊</h5>
+            <form  @submit.prevent="createOrder">
+              <div class="form-group">
                                 <label for="email">Email</label>
                                 <input v-model="form.user.email" :class="{'invalid':errors.has('email')}" v-validate="'required|email'" class="w-100" name="email" id="email" type="email" placeholder="請輸入email">
                                 <span v-if="errors.has('email')" class="text-danger">
                                     * {{errors.first('email')}}
                                 </span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="username">收件人姓名</label>
-                                <input v-model="form.user.name" :class="{'invalid':errors.has('name')}" v-validate="'required'" class=" w-100" name="name" id="username" type="text" placeholder="請輸入姓名">
-                                <span v-if="errors.has('name')" class="text-danger">
-                                    * 收件人姓名必填
-                                </span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="address">收件人地址</label>
-                                <input v-model="form.user.address" :class="{'invalid':errors.has('address')}" v-validate="'required'" class=" w-100" name="address" id="address" type="text" placeholder="請輸入地址">
-                                <span v-if="errors.has('address')" class="text-danger">
-                                * 收件人地址必填
-                                </span>
-                            </div>
-                            <div class="form-group">
-                                <label for="tel">收件人電話</label>
-                                <input v-model="form.user.tel" :class="{'invalid':errors.has('regex')}"
-                                v-validate="{required:true,regex: /^[09]{2}[0-9]{8}$/}"
-                                class="w-100" name="regex" id="tel" type="text" placeholder="請輸入電話">
-                                <span v-if="errors.has('regex')" class="text-danger">
-                                * 請輸入正確手機格式
-                                </span>
-                            </div>
-                            <label for="comment">留言</label>
-                            <textarea v-model="form.message" class="w-100" id="comment" rows="8"></textarea>
-                            <button class="btn mt-4 mb-4 col-12 btn-outline-primary" type="submit">送出訂單</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+              </div>
+              <div class="form-group">
+                <label for="username">收件人姓名</label>
+                <input v-model="form.user.name" :class="{'invalid':errors.has('name')}" v-validate="'required'" class=" w-100" name="name" id="username" type="text" placeholder="請輸入姓名">
+                <span v-if="errors.has('name')" class="text-danger">* 收件人姓名必填</span>
+              </div>
+              <div class="form-group">
+                <label for="address">收件人地址</label>
+                <input v-model="form.user.address" :class="{'invalid':errors.has('address')}" v-validate="'required'" class=" w-100" name="address" id="address" type="text" placeholder="請輸入地址">
+                <span v-if="errors.has('address')" class="text-danger">* 收件人地址必填</span>
+              </div>
+              <div class="form-group">
+                <label for="tel">收件人電話</label>
+                <input v-model="form.user.tel" :class="{'invalid':errors.has('regex')}"
+                v-validate="{required:true,regex: /^[09]{2}[0-9]{8}$/}"
+                class="w-100" name="regex" id="tel" type="text" placeholder="請輸入電話">
+                <span v-if="errors.has('regex')" class="text-danger">* 請輸入正確手機格式</span>
+              </div>
+              <label for="comment">留言</label>
+              <textarea v-model="form.message" class="w-100" id="comment" rows="8"></textarea>
+              <button class="btn mt-4 mb-4 col-12 btn-outline-primary" type="submit">送出訂單</button>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
-import StepBar from '@/views/frontend/StepBar.vue'
+import StepBar from '@/components/StepBar.vue'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
@@ -167,7 +157,7 @@ export default {
 </script>
 <style lang="scss" scoped>
     .wrap{
-        background-image: url('../../assets/image/tree-bg.jpg');
+        background-image: url('~@/assets/image/tree-bg.jpg');
         background-repeat: no-repeat;
         background-size: cover;
         padding: 100px 0;

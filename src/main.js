@@ -27,7 +27,6 @@ Vue.use(Vuex)
 Vue.use(VueI18n)
 
 Vue.component('Loading', Loading)
-/* eslint-disable no-new */
 Vue.filter('currency', currencyFitler)
 Vue.filter('date', dateFilter)
 

@@ -3,7 +3,7 @@
     <Loading :isLoading="isLoading"/>
     <div class="container">
       <div class="text-right">
-        <button class="btn btn-outline-primary" @click="openCouponModal(true)">
+        <button type="button" class="btn btn-outline-primary" @click="openCouponModal(true)">
           <i class="fas fa-cart-plus mr-2"></i>建立新的優惠券
         </button>
       </div>
@@ -27,10 +27,10 @@
               <span v-else class="text-danger font-weight-bold">未起用</span>
             </td>
             <td>
-            <button class="btn btn-outline-secondary mr-1" @click="openCouponModal(false, item)">
+            <button type="button" class="btn btn-outline-secondary mr-1" @click="openCouponModal(false, item)">
                   <i class="fas fa-edit"></i>
               </button>
-              <button class="btn btn-outline-danger" @click="delCouponModal(item)">
+              <button type="button" class="btn btn-outline-danger" @click="delCouponModal(item)">
                   <i class="fas fa-trash-alt"></i>
               </button>
             </td>
@@ -39,94 +39,22 @@
       </table>
       <Pagination :pages="pagination" @handle="getCoupons"/>
     </div>
-    <div class="modal fade" id="couponModal" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-dark text-light font-weight-bold">
-            <h5 class="modal-title" id="exampleModalLabel" v-if="isNew">新增優惠卷</h5>
-            <h5 class="modal-title" id="exampleModalLabel" v-else>修改優惠卷</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="title">優惠卷名稱</label>
-              <input type="text" class="form-control" id="title" v-model="tempCoupon.title"
-                placeholder="請輸入標題">
-            </div>
-            <div class="form-group">
-              <label for="coupon_code">優惠碼</label>
-              <input type="text" class="form-control" id="coupon_code" v-model="tempCoupon.code"
-                placeholder="請輸入優惠碼">
-            </div>
-            <div class="form-group">
-              <label for="due_date">到期日</label>
-              <input type="date" class="form-control" id="due_date"
-                v-model="due_date">
-            </div>
-            <div class="form-group">
-              <label for="price">折扣百分比</label>
-              <input type="number" class="form-control" id="price"
-                v-model="tempCoupon.percent" placeholder="請輸入折扣百分比">
-            </div>
-            <div class="form-group">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox"
-                  :true-value="1"
-                  :false-value="0"
-                  v-model="tempCoupon.is_enabled" id="is_enabled">
-                <label class="form-check-label" for="is_enabled">
-                  是否啟用
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-danger w-25" data-dismiss="modal">
-            <i class="fas fa-times"></i><span class="ml-2">取消</span>
-            </button>
-            <button type="button" class="btn btn-outline-primary w-25" @click="addCoupon">
-                <i class="fas fa-check"></i>
-                <span class="ml-2" v-if="isNew === true">新增</span>
-                <span class="ml-2" v-else>修改</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal fade" id="delCouponModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle">刪除確認</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body text-center mt-2 mb-2">
-                    確定要刪除<span class="font-weight-bold mr-2 ml-2">{{delItem.title}}</span>嗎??
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger w-25" data-dismiss="modal">
-                        <i class="fas fa-times"></i><span class="ml-2">取消</span>
-                    </button>
-                    <button type="button" class="btn btn-outline-primary w-25" @click="delCoupon(delItem)">
-                        <i class="fas fa-check"></i><span class="ml-2">刪除</span>
-                    </button>
-                </div>
-                </div>
-            </div>
-    </div>
+    <!-- Add & Edit modal -->
+    <CouponAddModal :isNew="isNew" :tempCoupon="tempCoupon" @emitAddCoupon="addCoupon"/>
+    <!-- Delete modal -->
+    <CouponDelModal :delItem="delItem" :due_date="due_date" @emitDelCoupon="delCoupon" />
   </div>
 </template>
 <script>
 import $ from 'jquery'
 import Pagination from '@/components/Pagination.vue'
+import CouponAddModal from '@/components/CouponAddModal.vue'
+import CouponDelModal from '@/components/CouponDelModal.vue'
 export default {
   components: {
-    Pagination
+    Pagination,
+    CouponAddModal,
+    CouponDelModal
   },
   props: {
     config: Object
@@ -144,7 +72,8 @@ export default {
       pagination: {},
       delItem: {},
       due_date: new Date(),
-      isNew: false
+      isNew: false,
+      isLoading: false
     }
   },
   watch: {
@@ -171,7 +100,7 @@ export default {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${page}`
       vm.$store.dispatch('updateLoading', true)
-      this.$http.get(api, vm.tempProduct).then((res) => {
+      vm.$http.get(api, vm.tempProduct).then((res) => {
         vm.coupons = res.data.coupons
         vm.$store.dispatch('updateLoading', false)
         vm.pagination = res.data.pagination

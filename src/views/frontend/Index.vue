@@ -17,7 +17,7 @@
 <script>
 import CustomerNavbar from './CustomerNavbar.vue'
 import CustomerFooter from './CustomerFooter.vue'
-import GoTop from '@/components/goTop.vue'
+import GoTop from '@/components/GoTop.vue'
 import Cart from './Cart.vue'
 import Alert from '@/components/AlertMessage.vue'
 export default {

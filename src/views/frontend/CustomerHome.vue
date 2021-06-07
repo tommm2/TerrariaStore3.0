@@ -1,112 +1,100 @@
 <template>
-    <div class="bg-light">
-        <div class="banner d-flex justify-content-center align-items-end">
-            <div class="typing-text mb-5">
-                Welcome to terraria Store.
-            </div>
-        </div>
-        <div class="about-us container text-center d-flex align-items-center">
-            <img src="@/assets/image/about.jpg" alt="about-img">
-            <div>
-                <h2>關於我們</h2>
-                <p class="p-3">在Terraria Store，你有無窮選擇，販賣各式魔法、遠程、近戰、和召喚武器，以及盔甲，藉助它們與數百種不同的敵怪戰鬥，你有無窮選擇。每個人都能找到自己想要的。
-                </p>
-            </div>
-        </div>
-        <div class="hot-product container text-center">
-            <div class="customer-box">
-                <h2>熱門商品</h2>
-                <swiper class="swiper" :options="swiperOption" v-if="products.length > 0">
-                    <swiper-slide class="mb-5" v-for="item in products" :key="item.id">
-                            <div class="product-grid mr-2 ml-2">
-                                <span class="badge">{{item.category}}</span>
-                                <div class="product-image">
-                                    <img class="pic-1 p-5" :src="item.imageUrl" :alt="item.title" @click="getSingleItem(item)">
-                                    <ul class="product-links">
-                                        <li>
-                                            <a href="#" @click.prevent="addToCart(item)">
-                                            <i class="fa fa-shopping-bag"></i>
-                                            加入購物車
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" @click.prevent="getSingleItem(item)">
-                                            <i class="fa fa-search"></i>
-                                            查看更多
-                                            </a>
-                                         </li>
-                                    </ul>
-                                </div>
-                                <div class="product-content">
-                                    <h3 class="title">{{item.title}}</h3>
-                                    <div class="price-group d-flex justify-content-center">
-                                        <del class="text-muted mr-2" v-if="item.origin_price !== item.price">{{item.origin_price | currency}}</del>
-                                        <div class="price" v-if="item.origin_price !== item.price">{{item.price | currency}}</div>
-                                        <div class="price" v-if="item.origin_price === item.price">{{item.origin_price | currency}}</div>
-                                    </div>
-                                </div>
-                            </div>
-                    </swiper-slide>
-                    <div class="swiper-pagination" slot="pagination"></div>
-                </swiper>
-            </div>
-        </div>
-        <div class="news container p-sm-5 text-center">
-            <h2>最新消息</h2>
-            <div class="news-box p-lg-5 p-sm-2 row justify-content-center">
-                <div class="news-first col-lg-4 col-sm-12 mt-3">
-                    <img src="@/assets/image/news-1.png" alt="Mushroom-suit">
-                    <p>新推出與瑪里歐合作的蘑菇套裝，穿上它一起去踩蘑菇，重返兒時玩馬力歐兄弟的時光吧!</p>
-                </div>
-                <div class="news-first col-lg-4 col-sm-12 mt-3">
-                    <img src="@/assets/image/news-2.png" alt="Creeper-suit">
-                    <p>新推出與Minecraft合作的苦力怕套裝，穿上它大家會害怕你爆炸而逃跑，是嚇人的好選擇!</p>
-                </div>
-                <div class="news-first col-lg-4 col-sm-12 mt-3">
-                    <img src="@/assets/image/news-3.png" alt="Toro-suit">
-                    <p>新推出與Sony合作的Toro時裝，可謂日本吉祥物的代名詞，穿上它包準你當上本月最佳吉祥物!</p>
-                </div>
-                <button @click="goBuySuit('時尚套裝')" class="mt-3"><i class="fas fa-long-arrow-alt-right mr-2"></i>前往購買</button>
-            </div>
-        </div>
-        <div class="other-info container p-5 text-lg-center text-center">
-            <h2>冒險資訊</h2>
-            <div class="other-box row mb-4">
-                <img class="col-lg-5 col-sm-12" src="@/assets/image/advanture-1.jpg" alt="advanture-suit">
-                <div class="p-5 col-lg-7 col-sm-12">
-                    <h5>與盔甲共舞</h5>
-                    <p class="text-left">Terraria Store的盔甲絕對是你的好選擇，不只能增加防禦率，穿著整件套裝還能獲取特殊效果。</p>
-                    <p class="text-left">
-                        <a href="#"><i class="fas fa-long-arrow-alt-right"></i>瞭解更多</a>
-                    </p>
-                </div>
-            </div>
-
-            <div class="other-box row mb-4">
-                <img class="d-lg-none col-lg-5 col-sm-12" src="@/assets/image/advanture-2.jpg" alt="advanture-boss">
-                <div class="p-5 col-lg-7 col-sm-12">
-                    <h5>知己知彼，百戰百勝</h5>
-                    <p class="text-left"> 當你有了裝備還有武器，你可能會覺得能成為專家了，那你就大錯特錯了!!要成為專家就須了解BOSS的打法。
-                    </p>
-                    <p class="text-left">
-                        <a href="#"><i class="fas fa-long-arrow-alt-right"></i>瞭解更多</a>
-                    </p>
-                </div>
-                <img class="hideImg col-lg-5  col-sm-12" src="@/assets/image/advanture-2.jpg" alt="advanture-boss">
-            </div>
-
-            <div class="other-box row">
-                <img class="col-lg-5 col-sm-12" src="@/assets/image/adverture-3.jpg" alt="advanture-npc">
-                <div class="p-5 col-lg-7 col-sm-12">
-                    <h5>NPC是你的好夥伴</h5>
-                    <p class="text-left">NPC就是你必須要交的朋友，他們能教你相關知識，或者是告訴你如何在Terraria世界生存。</p>
-                    <p class="text-left">
-                        <a href="#"><i class="fas fa-long-arrow-alt-right"></i>瞭解更多</a>
-                    </p>
-                </div>
-            </div>
-        </div>
+  <div class="bg-light">
+    <div class="banner d-flex justify-content-center align-items-end">
+      <div class="typing-text mb-5">Welcome to terraria Store.</div>
     </div>
+    <div class="about-us container text-center d-flex align-items-center">
+      <img src="@/assets/image/about.jpg" alt="about-img">
+      <div>
+        <h2>關於我們</h2>
+        <p class="p-3">在Terraria Store，你有無窮選擇，販賣各式魔法、遠程、近戰、和召喚武器，以及盔甲，藉助它們與數百種不同的敵怪戰鬥，你有無窮選擇。每個人都能找到自己想要的。</p>
+      </div>
+    </div>
+    <div class="hot-product container text-center">
+      <div class="customer-box">
+        <h2>熱門商品</h2>
+        <swiper class="swiper" :options="swiperOption" v-if="products.length > 0">
+          <swiper-slide class="mb-5" v-for="item in products" :key="item.id">
+            <div class="product-grid mr-2 ml-2" @click="getSingleItem(item)">
+              <span class="badge">{{item.category}}</span>
+              <div class="product-image">
+                <img class="pic-1 p-5" :src="item.imageUrl" :alt="item.title">
+                <ul class="product-links">
+                  <li>
+                    <a href="#" @click.prevent="addToCart(item)"><i class="fa fa-shopping-bag"></i>加入購物車</a>
+                  </li>
+                  <li>
+                    <a href="#" @click.prevent="getSingleItem(item)"><i class="fa fa-search"></i>查看更多</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="product-content">
+                <h3 class="title">{{item.title}}</h3>
+                <div class="price-group d-flex justify-content-center">
+                  <del class="text-muted mr-2" v-if="item.origin_price !== item.price">{{item.origin_price | currency}}</del>
+                  <div class="price" v-if="item.origin_price !== item.price">{{item.price | currency}}</div>
+                  <div class="price" v-if="item.origin_price === item.price">{{item.origin_price | currency}}</div>
+               </div>
+              </div>
+            </div>
+          </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
+        </swiper>
+      </div>
+    </div>
+    <div class="news container p-sm-5 text-center">
+      <h2>最新消息</h2>
+      <div class="news-box p-lg-5 p-sm-2 row justify-content-center">
+        <div class="news-first col-lg-4 col-sm-12 mt-3">
+          <img src="@/assets/image/news-1.png" alt="Mushroom-suit">
+          <p>新推出與瑪里歐合作的蘑菇套裝，穿上它一起去踩蘑菇，重返兒時玩馬力歐兄弟的時光吧!</p>
+        </div>
+        <div class="news-first col-lg-4 col-sm-12 mt-3">
+          <img src="@/assets/image/news-2.png" alt="Creeper-suit">
+          <p>新推出與Minecraft合作的苦力怕套裝，穿上它大家會害怕你爆炸而逃跑，是嚇人的好選擇!</p>
+        </div>
+        <div class="news-first col-lg-4 col-sm-12 mt-3">
+          <img src="@/assets/image/news-3.png" alt="Toro-suit">
+          <p>新推出與Sony合作的Toro時裝，可謂日本吉祥物的代名詞，穿上它包準你當上本月最佳吉祥物!</p>
+        </div>
+        <button @click="goBuySuit('時尚套裝')" class="mt-3"><i class="fas fa-long-arrow-alt-right mr-2"></i>前往購買</button>
+      </div>
+    </div>
+    <div class="other-info container p-5 text-lg-center text-center">
+      <h2>冒險資訊</h2>
+      <div class="other-box row mb-4">
+        <img class="col-lg-5 col-sm-12" src="@/assets/image/advanture-1.jpg" alt="advanture-suit">
+        <div class="p-lg-5 p-sm-3 col-lg-7 col-sm-12">
+          <h5>與盔甲共舞</h5>
+          <p class="text-left">Terraria Store的盔甲絕對是你的好選擇，不只能增加防禦率，穿著整件套裝還能獲取特殊效果。</p>
+          <p class="text-left">
+            <a href="#"><i class="fas fa-long-arrow-alt-right"></i>瞭解更多</a>
+          </p>
+        </div>
+      </div>
+      <div class="other-box row mb-4">
+        <img class="d-lg-none col-lg-5 col-sm-12" src="@/assets/image/advanture-2.jpg" alt="advanture-boss">
+        <div class="p-lg-5 p-sm-3 col-lg-7 col-sm-12">
+          <h5>知己知彼，百戰百勝</h5>
+          <p class="text-left"> 當你有了裝備還有武器，你可能會覺得能成為專家了，那你就大錯特錯了!!要成為專家就須了解BOSS的打法。</p>
+          <p class="text-left">
+            <a href="#"><i class="fas fa-long-arrow-alt-right"></i>瞭解更多</a>
+          </p>
+        </div>
+        <img class="hideImg col-lg-5  col-sm-12" src="@/assets/image/advanture-2.jpg" alt="advanture-boss">
+      </div>
+      <div class="other-box row">
+        <img class="col-lg-5 col-sm-12" src="@/assets/image/adverture-3.jpg" alt="advanture-npc">
+        <div class="p-lg-5 p-sm-3 col-lg-7 col-sm-12">
+          <h5>NPC是你的好夥伴</h5>
+          <p class="text-left">NPC就是你必須要交的朋友，他們能教你相關知識，或者是告訴你如何在Terraria世界生存。</p>
+          <p class="text-left">
+            <a href="#"><i class="fas fa-long-arrow-alt-right"></i>瞭解更多</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
@@ -225,7 +213,7 @@ export default {
         letter-spacing: 2px;
     }
     .banner{
-        background-image: url('../../assets/image/banner1.png');
+        background-image: url('~@/assets/image/banner1.png');
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -379,6 +367,7 @@ export default {
         }
     }
     .product-grid{
+        cursor: pointer;
         position: relative;
         border-radius: 10px;
         border: 1px solid #e7e7e7;

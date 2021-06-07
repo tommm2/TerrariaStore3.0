@@ -1,7 +1,5 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production'
-  ? '/TerrariaStore3.0/'
-  : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/TerrariaStore3.0/' : '/',
   configureWebpack: config => {
     if (process.env.NODE_ENV === 'production') {
       config.mode = 'production'

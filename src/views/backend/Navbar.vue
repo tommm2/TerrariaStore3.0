@@ -1,46 +1,42 @@
 <template>
-    <div>
-        <nav class="navbar navbar-expand-md">
-          <router-link class="navbar-brand" :to="{name:'CustomerHome'}">
-              <img src="@/assets/image/Logo.png" width="200">
-          </router-link>
-          <button @click="isToggle = !isToggle" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapse_target">
-              <i :class="{'toggle':isToggle}" class="fas fa-bars"></i>
-          </button>
-
-          <div class="collapse navbar-collapse" id="collapse_target">
-            <ul class="navbar-nav ml-auto font-weight-bold">
-              <li class="nav-item">
-                <router-link class="nav-link" :to="{name:'Order'}">
-                  <i class="far fa-file-alt"></i>
-                  <span class="ml-2">訂單列表</span>
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" :to="{name:'Products'}">
-                  <i class="fas fa-shopping-cart"></i>
-                  <span class="ml-2">產品列表</span>
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" :to="{name:'Coupon'}">
-                  <i class="fas fa-hand-holding-usd"></i>
-                  <span class="ml-2">優惠卷</span>
-                </router-link>
-              </li>
-             <li class="nav-item">
-                  <a href="#" @click.prevent="signOut" class="nav-link">
-                   <i class="fas fa-sign-out-alt"></i>
-                    <span class="ml-2">登出</span>
-                  </a>
-              </li>
-            </ul>
-
-          </div>
-
-        </nav>
-
-    </div>
+  <div>
+    <nav class="navbar navbar-expand-md">
+      <router-link class="navbar-brand" :to="{name:'CustomerHome'}">
+        <img src="@/assets/image/Logo.png" width="200">
+      </router-link>
+      <button @click="isToggle = !isToggle" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapse_target">
+        <i :class="{'toggle':isToggle}" class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="collapse_target">
+        <ul class="navbar-nav ml-auto font-weight-bold">
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{name:'Order'}">
+              <i class="far fa-file-alt"></i>
+              <span class="ml-2">訂單列表</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{name:'Products'}">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="ml-2">產品列表</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{name:'Coupon'}">
+              <i class="fas fa-hand-holding-usd"></i>
+              <span class="ml-2">優惠卷</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <a href="#" @click.prevent="signOut" class="nav-link">
+              <i class="fas fa-sign-out-alt"></i>
+              <span class="ml-2">登出</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
 </template>
 <script>
 import $ from 'jquery'
@@ -52,8 +48,8 @@ export default {
   },
   methods: {
     signOut () {
-      const api = `${process.env.VUE_APP_APIPATH}/logout`
       const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/logout`
       vm.$store.dispatch('updateLoading', true)
       vm.$http.post(api).then((res) => {
         if (res.data.success) {
@@ -63,11 +59,9 @@ export default {
       })
     }
   },
-  created () {
-    $(function () {
-      $('.nav-link').on('click', function () {
-        $('.navbar-toggler').click()
-      })
+  mounted () {
+    $('.nav-link').on('click', () => {
+      $('.navbar-toggler').click()
     })
   }
 }

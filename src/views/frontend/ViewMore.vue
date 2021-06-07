@@ -1,55 +1,51 @@
 <template>
-    <div>
-        <div class="wrap">
-            <div class="container">
-                <div class="product-container">
-                  <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><router-link :to="{name:'CustomerHome'}">首頁</router-link></li>
-                        <li class="breadcrumb-item"><router-link :to="{name:'CustomerProduct'}">所有商品</router-link></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{product.title}}</li>
-                    </ol>
-                  </nav>
-                  <div class="row justify-content-around px-3">
-                    <div class="col-lg-6 col-md-12 p-3 d-flex flex-column align-items-center border">
-                        <div class="product-image">
-                            <img width="150" :src="product.imageUrl" :alt="product.title">
-                        </div>
-                        <div class="product-content w-100 mt-5 mb-3">
-                            <h6 class="font-weight-bold">商品介紹</h6>
-                            <p class="product-text">{{product.description}}</p>
-                        </div>
-                        <div class="product-demo w-100">
-                            <h6 class="font-weight-bold">商品示範</h6>
-                            <div v-for="(item, index) in demo" :key="index">
-                                <img v-if="product.title === item.title" :src="item.url">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-5 col-sm-12 d-flex flex-column border mt-lg-0 mt-sm-3">
-                        <h5 class="font-weight-bold py-3 border-bottom">{{product.title}}<span class="title-span align-self-center d-sm-inline-block ml-2">{{product.category}}</span></h5>
-                        <div class="price-group pt-3">
-                            <del class="origin-price text-secondary" v-if="product.origin_price !== product.price"> 原價 {{product.origin_price | currency}}</del>
-                            <p class="price" v-if="product.origin_price !== product.price">售價 {{product.price | currency}}</p>
-                            <p class="price" v-if="product.origin_price === product.price">售價 {{product.price | currency}}</p>
-                        </div>
-                        <select  class="form-select" v-model="product.num">
-                            <option value="0" selected disabled>--請選擇數量--</option>
-                            <option :value="num" v-for="num in 5" :key="num">
-                                選購{{num}}{{product.unit}}
-                            </option>
-                        </select>
-                        <button type="button" v-if="product.num > 0" @click="addToCart(product, product.num)" class=" btn btn-primary mt-3 text-light font-weight-bold">加入購物車</button>
-                        <button type="button" v-else disabled class=" btn btn-primary mt-3 text-light font-weight-bold">加入購物車</button>
-                        <span class="total py-3 border-bottom">
-                            小計: {{product.num * product.price | currency}}
-                        </span>
-                    </div>
-                  </div>
+  <div>
+    <div class="wrap">
+      <div class="container">
+        <div class="product-container">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><router-link :to="{name:'CustomerHome'}">首頁</router-link></li>
+              <li class="breadcrumb-item"><router-link :to="{name:'CustomerProduct'}">所有商品</router-link></li>
+              <li class="breadcrumb-item active" aria-current="page">{{product.title}}</li>
+            </ol>
+          </nav>
+          <div class="row justify-content-around px-3">
+            <div class="col-lg-6 col-md-12 p-3 d-flex flex-column align-items-center border">
+              <div class="product-image">
+                <img width="150" :src="product.imageUrl" :alt="product.title">
+              </div>
+              <div class="product-content w-100 mt-5 mb-3">
+                <h6 class="font-weight-bold">商品介紹</h6>
+                <p class="product-text">{{product.description}}</p>
+              </div>
+              <div class="product-demo w-100">
+                <h6 class="font-weight-bold">商品示範</h6>
+                <div v-for="(item, index) in demo" :key="index">
+                    <img v-if="product.title === item.title" :src="item.url">
                 </div>
+              </div>
             </div>
+            <div class="col-lg-5 col-sm-12 d-flex flex-column border mt-lg-0 mt-sm-3">
+              <h5 class="font-weight-bold py-3 border-bottom">{{product.title}}<span class="title-span align-self-center d-sm-inline-block ml-2">{{product.category}}</span></h5>
+              <div class="price-group pt-3">
+                <del class="origin-price text-secondary" v-if="product.origin_price !== product.price"> 原價 {{product.origin_price | currency}}</del>
+                <p class="price" v-if="product.origin_price !== product.price">售價 {{product.price | currency}}</p>
+                <p class="price" v-if="product.origin_price === product.price">售價 {{product.price | currency}}</p>
+              </div>
+              <select  class="form-select" v-model="product.num">
+                <option value="0" selected disabled>--請選擇數量--</option>
+                <option :value="num" v-for="num in 5" :key="num">選購{{num}}{{product.unit}}</option>
+              </select>
+              <button type="button" v-if="product.num > 0" @click="addToCart(product, product.num)" class=" btn btn-primary mt-3 text-light font-weight-bold">加入購物車</button>
+              <button type="button" v-else disabled class=" btn btn-primary mt-3 text-light font-weight-bold">加入購物車</button>
+              <span class="total py-3 border-bottom">小計: {{product.num * product.price | currency}}</span>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 export default {
@@ -176,7 +172,7 @@ export default {
 </script>
 <style lang="scss" scoped>
    .wrap{
-       background-image: url('../../assets/image/tree-bg.jpg');
+       background-image: url('~@/assets/image/tree-bg.jpg');
        background-repeat: no-repeat;
        background-size: cover;
        padding: 100px 0;
