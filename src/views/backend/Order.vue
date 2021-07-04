@@ -35,7 +35,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import Pagination from '@/components/Pagination.vue'
 export default {
@@ -82,25 +81,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .wavy{
-      position: relative;
-      -webkit-box-reflect: below -12px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
-      span{
-        position: relative;
-        display: inline-block;
-        animation: animate 1s ease-in-out infinite;
-        animation-delay: calc(.1s*var(--i))
-      }
-  }
-  @keyframes animate{
-      0%{
-          transform: translateY(0px)
-      }
-      20%{
-          transform: translateY(-24px)
-      }
-      40%, 100%{
-          transform: translateY(0px)
-      }
-  }
 </style>

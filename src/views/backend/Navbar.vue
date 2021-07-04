@@ -67,47 +67,47 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .navbar{
-    background-color: #313131;
-    border-bottom:5px solid #8fc866;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    display: flex;
-    justify-content: space-around;
-    .nav-item{
-        text-decoration: none;
-        @media (max-width : 758px){
-          width: 120px;
-          margin-left: 30px;
-        }
-        a{
-          font-size: 20px;
-          color: #fff;
-          transition:color .3s ease;
-          &:hover{
-            color: #8fc866;
-            text-decoration: none;
-          }
-        }
-        .router-link-exact-active.active{
-            pointer-events: none;
-            color:#8fc866;
-        }
-    }
-    .navbar-toggler{
-      border: 2px solid #8fc866;
-      color: #8fc866;
-      transition: background .3s ease;
-      &:hover{
-        background: #8fc866;
-        color:#313131;
+.navbar {
+  background-color: #313131;
+  border-bottom:5px solid #8fc866;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  display: flex;
+  justify-content: space-around;
+  .nav-item {
+      text-decoration: none;
+      @media (max-width : 758px) {
+        width: 120px;
+        margin-left: 30px;
       }
-      i{
-        padding: 5px;
-        transition: transform .3s ease;
+      a{
+        font-size: 20px;
+        color: #fff;
+        transition:color .3s ease;
+        &:hover{
+          color: #8fc866;
+          text-decoration: none;
+        }
       }
+      .router-link-exact-active.active{
+          pointer-events: none;
+          color:#8fc866;
+      }
+  }
+  .navbar-toggler {
+    border: 2px solid #8fc866;
+    color: #8fc866;
+    transition: background .3s ease;
+    &:hover {
+      background: #8fc866;
+      color:#313131;
     }
-    .toggle{
-      transform: rotate(90deg);
+    i {
+      padding: 5px;
+      transition: transform .3s ease;
     }
   }
+  .toggle {
+    transform: rotate(90deg);
+  }
+}
 </style>

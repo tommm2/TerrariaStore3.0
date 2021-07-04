@@ -30,7 +30,7 @@
             <span class="text-danger" v-else>未啟用</span>
           </td>
           <td class="text-center">
-            <button class="btn btn-outline-secondary mr-2" @click="showModal(false,product)">
+            <button class="btn btn-outline-secondary mr-2" @click="showModal(false, product)">
               <i class="fas fa-edit"></i>
             </button>
             <button class="btn btn-outline-danger" @click="delModal(product)">
@@ -43,7 +43,7 @@
       <Pagination :pages="pagination" @handle="getProduct"/>
     </div>
     <!-- Add & Edit modal -->
-    <ProductAddModal :temProduct="temProduct" :isNew="isNew" :status="status" @addProduct="addProduct"/>
+    <ProductAddModal :temProduct="temProduct" :isNew="isNew" :status="status" @addProduct="addProduct" @imgUpload="uploadFile"/>
     <!-- Delete modal -->
     <ProductDelModal :delItem="delItem" @emitDelProduct="delProduct"/>
   </div>

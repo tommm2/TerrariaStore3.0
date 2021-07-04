@@ -1,17 +1,17 @@
 <template>
   <div>
-      <header>
-        <CustomerNavbar class="fixed-top"/>
-      </header>
-      <main>
-        <router-view/>
-      </main>
-      <footer>
-        <CustomerFooter/>
-      </footer>
-      <Cart v-if="route !== '/customerCart'"/>
-      <Alert/>
-      <GoTop/>
+    <header>
+      <CustomerNavbar class="fixed-top"/>
+    </header>
+    <main>
+      <router-view/>
+    </main>
+    <footer>
+      <CustomerFooter/>
+    </footer>
+    <Cart v-if="route !== '/customerCart'"/>
+    <Alert/>
+    <GoTop/>
   </div>
 </template>
 <script>

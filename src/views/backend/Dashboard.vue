@@ -22,7 +22,7 @@ export default {
 }
 </script>
 <style scoped>
-.wrap{
-    padding-top: 100px;
+.wrap {
+  padding-top: 100px;
 }
 </style>

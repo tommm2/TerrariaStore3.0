@@ -28,11 +28,11 @@
             </td>
             <td>
             <button type="button" class="btn btn-outline-secondary mr-1" @click="openCouponModal(false, item)">
-                  <i class="fas fa-edit"></i>
-              </button>
-              <button type="button" class="btn btn-outline-danger" @click="delCouponModal(item)">
-                  <i class="fas fa-trash-alt"></i>
-              </button>
+              <i class="fas fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-outline-danger" @click="delCouponModal(item)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
             </td>
           </tr>
         </tbody>
@@ -42,7 +42,7 @@
     <!-- Add & Edit modal -->
     <CouponAddModal :isNew="isNew" :tempCoupon="tempCoupon" @emitAddCoupon="addCoupon"/>
     <!-- Delete modal -->
-    <CouponDelModal :delItem="delItem" :due_date="due_date" @emitDelCoupon="delCoupon" />
+    <CouponDelModal :delItem="delItem" @emitDelCoupon="delCoupon"/>
   </div>
 </template>
 <script>
@@ -116,6 +116,7 @@ export default {
       }
       vm.$store.dispatch('updateLoading', true)
       vm.due_date = new Date(vm.tempCoupon.due_date * 1000)
+      console.log(vm.due_date)
       vm.$http[ajaxMethod](api, { data: vm.tempCoupon }).then((res) => {
         if (res.data.success) {
           $('#couponModal').modal('hide')
@@ -156,25 +157,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .wavy{
-      position: relative;
-      -webkit-box-reflect: below -12px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
-      span{
-        position: relative;
-        display: inline-block;
-        animation: animate 1s ease-in-out infinite;
-        animation-delay: calc(.1s*var(--i))
-      }
-  }
-  @keyframes animate{
-      0%{
-          transform: translateY(0px)
-      }
-      20%{
-          transform: translateY(-24px)
-      }
-      40%, 100%{
-          transform: translateY(0px)
-      }
-  }
 </style>

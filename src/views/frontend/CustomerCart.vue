@@ -7,36 +7,36 @@
             <StepBar class="pt-5" :status="status" />
             <h5 class="text-center pb-4 font-weight-bold">購物車列表</h5>
             <div class="table-list" v-if="cart.carts.length !== 0">
-                            <table  class="table text-white">
-                                <thead class="bg-primary">
-                                    <th>品名</th>
-                                    <th>數量</th>
-                                    <th>價錢</th>
-                                    <th>刪除</th>
-                                </thead>
-                                <tbody>
-                                  <tr v-for="item in cart.carts" :key="item.id">
-                                    <td>
-                                        <img width="30" :src="item.product.imageUrl" :alt="item.product.title">
-                                        <span class="d-md-inline d-sm-block">
-                                            {{item.product.title }}
-                                        </span>
-                                        <div class="text-success" v-if="item.coupon">
-                                            已套用優惠券
-                                        </div>
-                                    </td>
-                                    <td>
-                                      <i @click="changeQty(item.id, item.product.id, item.qty, false)" class="fas fa-minus mx-1"></i>
-                                      {{ item.qty }}/{{ item.product.unit }}
-                                      <i @click="changeQty(item.id, item.product.id, item.qty, true)" class="fas fa-plus mx-1"></i>
-                                    </td>
-                                    <td>{{ item.final_total | currency}}</td>
-                                    <td>
-                                        <i @click="delCart(item.id)" class="fas fa-trash-alt"></i>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                            </table>
+              <table  class="table text-white">
+                <thead class="bg-primary">
+                  <th>品名</th>
+                  <th>數量</th>
+                  <th>價錢</th>
+                  <th>刪除</th>
+                </thead>
+                <tbody>
+                  <tr v-for="item in cart.carts" :key="item.id">
+                    <td>
+                      <img width="30" :src="item.product.imageUrl" :alt="item.product.title">
+                      <span class="d-md-inline d-sm-block">
+                        {{item.product.title }}
+                      </span>
+                      <div class="text-success" v-if="item.coupon">
+                        已套用優惠券
+                      </div>
+                    </td>
+                    <td>
+                      <i @click="changeQty(item.id, item.product.id, item.qty, false)" class="fas fa-minus mx-1"></i>
+                      {{ item.qty }}/{{ item.product.unit }}
+                      <i @click="changeQty(item.id, item.product.id, item.qty, true)" class="fas fa-plus mx-1"></i>
+                    </td>
+                    <td>{{ item.final_total | currency}}</td>
+                    <td>
+                        <i @click="delCart(item.id)" class="fas fa-trash-alt"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <div v-if="cart.carts.length === 0" class="no-item-res text-white text-center font-weight-bold">
               <i class="fas fa-cart-arrow-down mr-2"></i>空無一物的購物車
@@ -59,11 +59,11 @@
             <h5 class="text-center pb-4 font-weight-bold">買家資訊</h5>
             <form  @submit.prevent="createOrder">
               <div class="form-group">
-                                <label for="email">Email</label>
-                                <input v-model="form.user.email" :class="{'invalid':errors.has('email')}" v-validate="'required|email'" class="w-100" name="email" id="email" type="email" placeholder="請輸入email">
-                                <span v-if="errors.has('email')" class="text-danger">
-                                    * {{errors.first('email')}}
-                                </span>
+                <label for="email">Email</label>
+                <input v-model="form.user.email" :class="{'invalid':errors.has('email')}" v-validate="'required|email'" class="w-100" name="email" id="email" type="email" placeholder="請輸入email">
+                <span v-if="errors.has('email')" class="text-danger">
+                    * {{errors.first('email')}}
+                </span>
               </div>
               <div class="form-group">
                 <label for="username">收件人姓名</label>
@@ -156,111 +156,111 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    .wrap{
-        background-image: url('~@/assets/image/tree-bg.jpg');
-        background-repeat: no-repeat;
-        background-size: cover;
-        padding: 100px 0;
-        .row{
-           background:rgba(0,0,0,0.8);
-           border-radius: 10px;
-           h5{
-            font-size: 30px;
-          }
-        }
-    }
-    .table-list{
-        display: block;
-        overflow-y: auto;
-        height: 300px;
-        table{
-            tr {
-              width: 100%;
-              border: none;
-            }
-            td {
-                white-space: nowrap;
-                text-align: center;
-                padding: 6px;
-                i{
-                    cursor: pointer;
-                    transition: .3s ease;
-                    &:hover{
-                        color: #8fc866;
-                    }
-                }
-            }
-        }
-    }
-    .input-group{
-        input{
-            font-size: 20px;
-            padding: 10px;
-            border-radius: 5px;
-            outline:none;
-            border:2px solid #8fc866;
-            background: rgba(0, 0, 0, 0);
-            color:#fff;
-        }
-        button{
-            font-size: 18px;
-            &:hover{
-                color:white;
-            }
-        }
-    }
-    .no-item-res{
-        font-size:20px;
-        background: gray;
-        padding: 10px 0;
-        border-radius: 10px;
-    }
-    .price{
-        font-size: 20px;
-    }
+.wrap{
+  background-image: url('~@/assets/image/tree-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 100px 0;
+  .row{
+    background:rgba(0,0,0,0.8);
+    border-radius: 10px;
     h5{
-        font-size: 35px;
-        color: #8fc866;
+    font-size: 30px;
     }
-    form{
-        .invalid{
-            border: 1px solid #DC3545;
+  }
+}
+.table-list{
+  display: block;
+  overflow-y: auto;
+  height: 300px;
+  table{
+    tr {
+      width: 100%;
+      border: none;
+    }
+    td {
+      white-space: nowrap;
+      text-align: center;
+      padding: 6px;
+      i{
+        cursor: pointer;
+        transition: .3s ease;
+        &:hover{
+            color: #8fc866;
         }
-        label{
-            display: block;
-            color:#fff;
-        }
-        input{
-            margin-bottom: 15px;
-            font-size: 20px;
-            padding: 5px;
-            border-radius: 5px;
-            outline:none;
-            border:1px solid #8fc866;
-            background: rgba(0, 0, 0, 0);
-            color:#fff;
-        }
-        textarea{
-            border:1px solid #8fc866;
-            background: rgba(0, 0, 0, 0);
-            color:#fff;
-            outline:none;
-        }
-        button:hover{
-            color: #fff;
-        }
+      }
     }
-    ::-webkit-scrollbar {
-        width: 3px;
+  }
+}
+.input-group{
+  input{
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    outline:none;
+    border:2px solid #8fc866;
+    background: rgba(0, 0, 0, 0);
+    color:#fff;
+  }
+  button{
+    font-size: 18px;
+    &:hover{
+      color:white;
     }
-    ::-webkit-scrollbar-corner{
-        height: 3px;
-    }
-    ::-webkit-scrollbar-thumb {
-        background:#8fc866;
-        border-radius: 5px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: #8fc86693;
-    }
+  }
+}
+.no-item-res{
+  font-size:20px;
+  background: gray;
+  padding: 10px 0;
+  border-radius: 10px;
+}
+.price{
+  font-size: 20px;
+}
+h5{
+  font-size: 35px;
+  color: #8fc866;
+}
+form{
+  .invalid{
+    border: 1px solid #DC3545;
+  }
+  label{
+    display: block;
+    color:#fff;
+  }
+  input{
+    margin-bottom: 15px;
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 5px;
+    outline:none;
+    border:1px solid #8fc866;
+    background: rgba(0, 0, 0, 0);
+    color:#fff;
+  }
+  textarea{
+    border:1px solid #8fc866;
+    background: rgba(0, 0, 0, 0);
+    color:#fff;
+    outline:none;
+  }
+  button:hover{
+    color: #fff;
+  }
+}
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-corner{
+  height: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background:#8fc866;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8fc86693;
+}
 </style>

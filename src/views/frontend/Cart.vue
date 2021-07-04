@@ -155,13 +155,16 @@ export default {
 ::-webkit-scrollbar {
   width: 3px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #8fc866;
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #8fc86693;
 }
+
 .header {
   position: relative;
   .header-text {
@@ -176,6 +179,7 @@ export default {
     }
   }
 }
+
 .modal-content {
   background: rgba(0, 0, 0, 0.8);
   input {
@@ -191,6 +195,7 @@ export default {
     border-radius: 10px;
   }
 }
+
 .wavy {
   position: relative;
   -webkit-box-reflect: below -12px linear-gradient(transparent, rgba(0, 0, 0, 0.2));

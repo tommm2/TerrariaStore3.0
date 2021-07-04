@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="child-footer p-3 bg-dark text-white text-center">
-      <span>&copy;Tomm2 圖片來源皆來自網路，僅當作練習作品</span>
+      <span>&copy;tommm2 圖片來源皆來自網路，僅當作練習作品</span>
     </div>
   </div>
 </template>
@@ -43,42 +43,47 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    ul{
-        li{
-            margin-bottom: 30px;
-            a{
-                font-size:25px;
-                font-weight: 1000;
-            }
-        }
+ul {
+  li {
+    margin-bottom: 30px;
+    a {
+      font-size:25px;
+      font-weight: 1000;
     }
-    h5{
-        font-size: 25px;
-        font-weight: bolder;
+  }
+}
+
+h5 {
+  font-size: 25px;
+  font-weight: bolder;
+}
+
+a {
+  font-size: 20px;
+  color:gray;
+  margin-right: 10px;
+  transition: color .3s ease;
+  font-weight: bolder;
+
+  &:hover{
+    color:#8fc866;
+    text-decoration: none;
+  }
+}
+
+.Logo {
+  input{
+    padding: 5px;
+    width: 230px;
+    border: 2px solid #8fc866;
+    outline: none;
+  }
+
+  button{
+    color:gray;
+    &:hover{
+      color: #8fc866;
     }
-    a{
-            font-size: 20px;
-            color:gray;
-            margin-right: 10px;
-            transition: color .3s ease;
-            font-weight: bolder;
-            &:hover{
-                color:#8fc866;
-                text-decoration: none;
-            }
-        }
-    .Logo{
-        input{
-            padding: 5px;
-            width: 230px;
-            border: 2px solid #8fc866;
-            outline: none;
-        }
-        button{
-            color:gray;
-            &:hover{
-                color: #8fc866;
-            }
-        }
-    }
+  }
+}
 </style>

@@ -17,7 +17,7 @@ export default {
       })
     }
   },
-  created () {
+  mounted () {
     $(window).scroll(function () {
       if ($(this).scrollTop() > 400) {
         $('.gotop').fadeIn()
@@ -30,22 +30,22 @@ export default {
 </script>
 <style lang="scss" scoped>
 .gotop {
-    outline: none;
-    border:none;
-    display: none;
-    position:fixed;
-    z-index:90;
-    width:50px;
-    height:50px;
-    color:#fff;
-    line-height:50px;
-    border-radius:50%;
-    text-align: center;
-    right: 4%;
-    bottom: 15%;
-    @media (max-width:480px) {
-        bottom:18%;
-        right: 5%;
-    }
+  outline: none;
+  border:none;
+  display: none;
+  position:fixed;
+  z-index:90;
+  width:50px;
+  height:50px;
+  color:#fff;
+  line-height:50px;
+  border-radius:50%;
+  text-align: center;
+  right: 4%;
+  bottom: 15%;
+  @media (max-width:480px) {
+    bottom:18%;
+    right: 5%;
+  }
 }
 </style>

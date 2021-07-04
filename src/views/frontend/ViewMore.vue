@@ -171,94 +171,94 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-   .wrap{
-       background-image: url('~@/assets/image/tree-bg.jpg');
-       background-repeat: no-repeat;
-       background-size: cover;
-       padding: 100px 0;
-       .breadcrumb{
-           background: none;
-           a{
-                transition: all .3s ease;
-               &:hover{
-                text-decoration: none;
-                }
-           }
-       }
-       .container{
-            .product-container{
-              background: rgba(0, 0, 0, 0.7);
-              box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-              border-radius: 20px;
-              padding: 16px;
-            }
-            .product-content{
-                border-top: 1px solid #fff;
-                padding-top: 20px;
-                p{
-                    font-size: 16px;
-                    color:#fff;
-                }
-            }
-            .product-demo{
-                img{
-                    width: 100%;
-                    height: 180px;
-                    border-radius: 10px;
-                }
-                .no-provide{
-                    color:#fff;
-                    font-size: 30px;
-                    text-align: center;
-                    padding: 40px;
-                }
-            }
-            .price-group{
-                .origin-price{
-                    font-size: 22px;
-                    font-weight: 700;
-                }
-                .price{
-                    color: #1abc9c;
-                    font-size: 25px;
-                    font-weight: 800;
-                    animation: color-animate 6s infinite linear;
-                }
-            }
-            .form-select{
-                font-size: 20px;
-                padding: 10px;
-                border-radius: 5px;
-                outline:none;
-                cursor: pointer;
-                border:3px solid #8fc866;
-                background: #313131;
-                color:#fff;
-            }
-            .total{
-                font-size: 25px;
-                font-weight: 600;
-                color: #8fc866;
-            }
-            .title-span{
-                font-size:15px;
-                background: #FF5151;
-                border-radius: 5px;
-                padding: 5px;
-                color:#fff;
-            }
-        }
-        h5{
-            font-size: 35px;
-            color: #8fc866;
-            @media (max-width:400px) {
-                font-size: 23px;
-            }
-        }
-        h6{
-            font-size: 25px;
-            color: #8fc866;
-            margin-bottom: 10px;
-        }
+.wrap {
+  background-image: url('~@/assets/image/tree-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 100px 0;
+  .breadcrumb {
+    background: none;
+    a {
+      transition: all .3s ease;
+      &:hover {
+      text-decoration: none;
+      }
+    }
+  }
+  .container {
+    .product-container {
+      background: rgba(0, 0, 0, 0.7);
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      border-radius: 20px;
+      padding: 16px;
+    }
+    .product-content {
+      border-top: 1px solid #fff;
+      padding-top: 20px;
+      p {
+        font-size: 16px;
+        color:#fff;
+      }
+    }
+    .product-demo {
+      img{
+        width: 100%;
+        height: 180px;
+        border-radius: 10px;
+      }
+      .no-provide {
+        color:#fff;
+        font-size: 30px;
+        text-align: center;
+        padding: 40px;
+      }
+    }
+    .price-group {
+      .origin-price {
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .price {
+        color: #1abc9c;
+        font-size: 25px;
+        font-weight: 800;
+        animation: color-animate 6s infinite linear;
+      }
+    }
+    .form-select {
+      font-size: 20px;
+      padding: 10px;
+      border-radius: 5px;
+      outline:none;
+      cursor: pointer;
+      border:3px solid #8fc866;
+      background: #313131;
+      color:#fff;
+    }
+    .total {
+      font-size: 25px;
+      font-weight: 600;
+      color: #8fc866;
+    }
+    .title-span {
+      font-size:15px;
+      background: #FF5151;
+      border-radius: 5px;
+      padding: 5px;
+      color:#fff;
+    }
+  }
+  h5 {
+    font-size: 35px;
+    color: #8fc866;
+    @media (max-width:400px) {
+      font-size: 23px;
+    }
+  }
+  h6{
+    font-size: 25px;
+    color: #8fc866;
+    margin-bottom: 10px;
+  }
 }
 </style>

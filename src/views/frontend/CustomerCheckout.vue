@@ -144,86 +144,91 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    h5{
-        font-size: 30px;
-        color: #8fc866;
-        white-space: nowrap;
-    }
-    .wrap{
-        background-image: url('~@/assets/image/tree-bg.jpg');
-        background-repeat: no-repeat;
-        background-size: cover;
-        padding: 100px 0;
-       .container{
-           .row{
-                border-radius: 10px;
-                background:rgba(0,0,0,0.8);
-                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-           }
-            .table-hidden {
-                tbody{
-                    overflow-y: auto;/*設定卷軸 auto 是有超過我的高度的時候才會出現卷軸*/
-                    height: 300px;/*自己設定*/
-                    display: block;
-                    border: none;
-                }
-                tr {
-                    width: 100%;
-                    display: inline-table;
-                }
-                tfoot{
-                    font-weight: bold;
-                    font-size: 25px;
-                    .price-focus{
-                        color: #1abc9c;
-                        animation: color-animate 5s infinite linear;
-                    }
-                    @keyframes color-animate{
-                        0%{ color: #00b894; }
-                        20%{ color: #00cec9; }
-                        40%{ color: #0984e3; }
-                        60%{ color: #6c5ce7; }
-                        80%{ color: #e84393; }
-                        100%{ color: #00b894; }
-                        }
-                }
-            }
-            .customer-info{
-                tbody th{
-                    font-size: 20px;
-                    color: gray;
-                }
-            }
-       }
-    }
-    .header{
-        position: relative;
-        .header-text{
-            position: absolute;
-            top:20%;
-            left:40%;
-            color:#8fc866;
-            font-weight: 1000;
-            font-size: 20px;
-            @media (max-width:420px) {
-                font-size: 16px;
-            }
-        }
-    }
-    .modal-content{
-        background: rgba(0,0,0,0.8);
-        button{
-            color: #fff;
-        }
-    }
-    ::-webkit-scrollbar {
-        width: 3px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background:#8fc866;
+h5 {
+  font-size: 30px;
+  color: #8fc866;
+  white-space: nowrap;
+}
+.wrap {
+  background-image: url('~@/assets/image/tree-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 100px 0;
+  .container {
+    .row {
       border-radius: 10px;
+      background:rgba(0,0,0,0.8);
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
-    ::-webkit-scrollbar-thumb:hover {
-        background: #8fc86693;
+    .table-hidden {
+      tbody {
+        overflow-y: auto;/*設定卷軸 auto 是有超過我的高度的時候才會出現卷軸*/
+        height: 300px;/*自己設定*/
+        display: block;
+        border: none;
+      }
+      tr {
+        width: 100%;
+        display: inline-table;
+      }
+      tfoot {
+        font-weight: bold;
+        font-size: 25px;
+        .price-focus {
+          color: #1abc9c;
+          animation: color-animate 5s infinite linear;
+        }
+        @keyframes color-animate {
+          0%{ color: #00b894; }
+          20%{ color: #00cec9; }
+          40%{ color: #0984e3; }
+          60%{ color: #6c5ce7; }
+          80%{ color: #e84393; }
+          100%{ color: #00b894; }
+        }
+      }
     }
+    .customer-info {
+      tbody th {
+        font-size: 20px;
+        color: gray;
+      }
+    }
+  }
+}
+
+.header {
+  position: relative;
+  .header-text {
+    position: absolute;
+    top:20%;
+    left:40%;
+    color:#8fc866;
+    font-weight: 1000;
+    font-size: 20px;
+    @media (max-width:420px) {
+      font-size: 16px;
+    }
+  }
+}
+
+.modal-content {
+  background: rgba(0,0,0,0.8);
+  button {
+    color: #fff;
+  }
+}
+
+::-webkit-scrollbar {
+    width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background:#8fc866;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8fc86693;
+}
 </style>

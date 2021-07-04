@@ -65,39 +65,41 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .wrap{
-    background-image: url('../../assets/image/tree-bg.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding: 200px 0;
-    height: 100vh;
-    .ani-background{
-      position: relative;
-      .ani-object{
-        position: absolute;
-        left: 30%;
-        bottom: 11%;
-        @media (min-width:700px) {
-          left:40%;
-        }
-      }
-    }
-    form{
-      input{
-        padding: 5px;
-        border: 3px solid #8fc866;
-        border-radius: 10px;
-        outline: none;
-        background: rgba(0, 0, 0, 0.4);
-        color: #fff;
+.wrap {
+  background-image: url('../../assets/image/tree-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 200px 0;
+  height: 100vh;
+  .ani-background {
+    position: relative;
+    .ani-object {
+      position: absolute;
+      left: 30%;
+      bottom: 11%;
+      @media (min-width:700px) {
+        left:40%;
       }
     }
   }
-  ::placeholder{
-    color:#313131;
+  form {
+    input {
+      padding: 5px;
+      border: 3px solid #8fc866;
+      border-radius: 10px;
+      outline: none;
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+    }
   }
- .footer-text{
-   font-size: 20px;
-   font-weight: bold;
- }
+}
+
+::placeholder {
+  color:#313131;
+}
+
+.footer-text {
+  font-size: 20px;
+  font-weight: bold;
+}
 </style>

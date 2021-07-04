@@ -23,25 +23,25 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.wavy{
+.wavy {
+  position: relative;
+  span {
+    font-family: pixel;
+    letter-spacing: 8px;
     position: relative;
-    span{
-        font-family: pixel;
-        letter-spacing: 8px;
-        position: relative;
-        display: inline-block;
-        animation: animate 1s ease-in-out infinite;
-        animation-delay: calc(.1s*var(--i))
-    }
+    display: inline-block;
+    animation: animate 1s ease-in-out infinite;
+    animation-delay: calc(.1s * var(--i))
+  }
 }
-@keyframes animate{
-  0%{
+@keyframes animate {
+  0% {
     transform: translateY(0px)
   }
-  20%{
+  20% {
     transform: translateY(-24px)
   }
-  40%, 100%{
+  40%, 100% {
     transform: translateY(0px)
   }
 }
