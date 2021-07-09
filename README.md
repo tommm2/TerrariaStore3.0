@@ -7,6 +7,9 @@
 * 前台功能: 漢堡選單、網頁置頂功能、 購物車功能(可增加商品或減少商品)、商品展示(分類項目、商品詳細介紹)、下訂單、結帳資訊、管理員登入頁面等等。
 * 後台功能: 新增產品、刪除產品(包含刪除確認)、修改產品、優惠卷管理、查詢訂單。
 
+## DEMO
+[https://tommm2.github.io/TerrariaStore3.0/#/home](https://tommm2.github.io/TerrariaStore3.0/#/home)
+
 ## 使用技術:
 * VueCli 4
 * Vuex
