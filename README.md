@@ -10,25 +10,25 @@
 ## 網頁展示
 
 ### Loading動畫
-[Imgur](https://i.imgur.com/PG0FMEZ.jpg)
+![Imgur](https://i.imgur.com/PG0FMEZ.jpg)
 
 ### 首頁
-[Imgur](https://i.imgur.com/BdoYILd.jpg)
+![Imgur](https://i.imgur.com/BdoYILd.jpg)
 
 ### 即時購物車介面
-[Imgur](https://i.imgur.com/hsvptxC.jpg)
+![Imgur](https://i.imgur.com/hsvptxC.jpg)
 
 ### 所有商品頁面
-[Imgur](https://i.imgur.com/BkUW4t0.jpg)
+![Imgur](https://i.imgur.com/BkUW4t0.jpg)
 
 ### 下訂單頁面
-[Imgur](https://i.imgur.com/Bv1uRyV.jpg)
+![Imgur](https://i.imgur.com/Bv1uRyV.jpg)
 
 ### 登入畫面
-[Imgur](https://i.imgur.com/T6JjEFz.jpg)
+![Imgur](https://i.imgur.com/T6JjEFz.jpg)
 
 ### 後台
-[Imgur](https://i.imgur.com/VLc3PUO.jpg)
+![Imgur](https://i.imgur.com/VLc3PUO.jpg)
 
 詳細網頁呈現歡迎查看[DEMO](https://tommm2.github.io/TerrariaStore3.0/)!!!
 
