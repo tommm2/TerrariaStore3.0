@@ -43,7 +43,7 @@
       <Pagination :pages="pagination" @handle="getProduct"/>
     </div>
     <!-- Add & Edit modal -->
-    <ProductAddModal :temProduct="temProduct" :isNew="isNew" :status="status" @addProduct="addProduct" @imgUpload="uploadFile"/>
+    <ProductAddModal :temProduct="temProduct" :isNew="isNew" :status="status" @addProduct="addProduct"/>
     <!-- Delete modal -->
     <ProductDelModal :delItem="delItem" @emitDelProduct="delProduct"/>
   </div>
@@ -147,27 +147,6 @@ export default {
           vm.$bus.$emit('message:push', res.data.message, 'danger')
         }
         vm.$store.dispatch('updateLoading', false)
-      })
-    },
-    uploadFile () {
-      const vm = this
-      const uploadData = vm.$refs.files.files[0]
-      const formData = new FormData()
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`
-      vm.status.filesLoading = true
-      formData.append('file-to-upload', uploadData)
-      vm.$http.post(api, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then((res) => {
-        if (res.data.success) {
-          vm.$set(vm.temProduct, 'imageUrl', res.data.imageUrl)
-          vm.$bus.$emit('message:push', '上傳成功', 'success')
-        } else {
-          vm.$bus.$emit('message:push', '上傳失敗', 'danger')
-        }
-        vm.status.filesLoading = false
       })
     }
   },

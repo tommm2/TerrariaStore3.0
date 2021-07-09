@@ -34,6 +34,11 @@ const routes = [
         path: 'viewMore/:id',
         name: 'ViewMore',
         component: () => import('@/views/frontend/ViewMore.vue')
+      },
+      {
+        path: 'login',
+        name: 'Login',
+        component: () => import('@/views/frontend/Login.vue')
       }
     ]
   },
@@ -62,11 +67,6 @@ const routes = [
         meta: { requiresAuth: true }
       }
     ]
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/frontend/Login.vue')
   },
   { path: '*', redirect: '/home' }
 ]

@@ -9,7 +9,7 @@
     <footer>
       <CustomerFooter/>
     </footer>
-    <Cart v-if="route !== '/customerCart'"/>
+    <Cart v-if="isCart"/>
     <Alert/>
     <GoTop/>
   </div>
@@ -33,7 +33,16 @@ export default {
     Cart,
     GoTop
   },
-  created () {
+  computed: {
+    isCart () {
+      const vm = this
+      if (vm.route !== '/customerCart' && vm.route !== '/login') {
+        return true
+      }
+      return false
+    }
+  },
+  mounted () {
     this.$bus.$on('getRoute', (route) => {
       this.route = route
     })

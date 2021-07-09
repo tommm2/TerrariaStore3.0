@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav class="navbar navbar-expand-md">
-      <router-link class="navbar-brand" :to="{name:'CustomerHome'}">
+      <router-link class="navbar-brand" :to="{ name:'CustomerHome' }">
         <img src="@/assets/image/Logo.png" width="200">
       </router-link>
       <button @click="isToggle = !isToggle" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapse_target">
@@ -10,19 +10,19 @@
       <div class="collapse navbar-collapse" id="collapse_target">
         <ul class="navbar-nav ml-auto font-weight-bold">
           <li class="nav-item">
-            <router-link class="nav-link" :to="{name:'Order'}">
+            <router-link class="nav-link" :to="{ name:'Order' }">
               <i class="far fa-file-alt"></i>
               <span class="ml-2">訂單列表</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{name:'Products'}">
+            <router-link class="nav-link" :to="{ name:'Products' }">
               <i class="fas fa-shopping-cart"></i>
               <span class="ml-2">產品列表</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{name:'Coupon'}">
+            <router-link class="nav-link" :to="{ name:'Coupon' }">
               <i class="fas fa-hand-holding-usd"></i>
               <span class="ml-2">優惠卷</span>
             </router-link>

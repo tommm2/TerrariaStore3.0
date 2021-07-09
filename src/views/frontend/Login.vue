@@ -1,7 +1,6 @@
 <template>
   <div>
     <Alert/>
-    <Navbar class="fixed-top"/>
     <div class="wrap">
       <div class="container">
         <div class="row justify-content-center mb-3">
@@ -19,7 +18,7 @@
             <input class="col-11" type="password" placeholder="*******" v-model="user.password" autocomplete="password">
             <div class="btn-group mt-3 col-sm-12">
               <button type="submit" class="btn w-50 mr-3 btn-primary text-white">登入</button>
-              <router-link class="btn w-50 btn-danger" :to="{name:'CustomerHome'}">返回</router-link>
+              <router-link class="btn w-50 btn-danger" :to="{ name:'CustomerHome' }">返回</router-link>
             </div>
           </form>
         </div>
@@ -29,11 +28,9 @@
 </template>
 <script>
 import Alert from '@/components/AlertMessage.vue'
-import Navbar from './CustomerNavbar.vue'
 export default {
   components: {
-    Alert,
-    Navbar
+    Alert
   },
   data () {
     return {
@@ -61,6 +58,11 @@ export default {
         vm.$store.dispatch('updateLoading', false)
       })
     }
+  },
+  created () {
+    const vm = this
+    vm.$bus.$emit('getRoute', vm.$route.path)
+    console.log(vm.$route.path)
   }
 }
 </script>

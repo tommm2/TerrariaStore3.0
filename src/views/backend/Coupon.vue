@@ -40,7 +40,63 @@
       <Pagination :pages="pagination" @handle="getCoupons"/>
     </div>
     <!-- Add & Edit modal -->
-    <CouponAddModal :isNew="isNew" :tempCoupon="tempCoupon" @emitAddCoupon="addCoupon"/>
+    <div class="modal fade" id="couponModal" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-dark text-light font-weight-bold">
+            <h5 class="modal-title" id="exampleModalLabel" v-if="isNew">新增優惠卷</h5>
+            <h5 class="modal-title" id="exampleModalLabel" v-else>修改優惠卷</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="title">優惠卷名稱</label>
+              <input type="text" class="form-control" id="title" v-model="tempCoupon.title"
+                placeholder="請輸入標題">
+            </div>
+            <div class="form-group">
+              <label for="coupon_code">優惠碼</label>
+              <input type="text" class="form-control" id="coupon_code" v-model="tempCoupon.code"
+                placeholder="請輸入優惠碼">
+            </div>
+            <div class="form-group">
+              <label for="due_date">到期日</label>
+              <input type="date" class="form-control" id="due_date"
+                v-model="due_date">
+            </div>
+            <div class="form-group">
+              <label for="price">折扣百分比</label>
+              <input type="number" class="form-control" id="price"
+                v-model="tempCoupon.percent" placeholder="請輸入折扣百分比">
+            </div>
+            <div class="form-group">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                  :true-value="1"
+                  :false-value="0"
+                  v-model="tempCoupon.is_enabled" id="is_enabled">
+                <label class="form-check-label" for="is_enabled">
+                  是否啟用
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger w-25" data-dismiss="modal">
+            <i class="fas fa-times"></i><span class="ml-2">取消</span>
+            </button>
+            <button type="button" class="btn btn-outline-primary w-25" @click="addCoupon">
+              <i class="fas fa-check"></i>
+              <span class="ml-2" v-if="isNew">新增</span>
+              <span class="ml-2" v-else>修改</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Delete modal -->
     <CouponDelModal :delItem="delItem" @emitDelCoupon="delCoupon"/>
   </div>
@@ -48,12 +104,10 @@
 <script>
 import $ from 'jquery'
 import Pagination from '@/components/Pagination.vue'
-import CouponAddModal from '@/components/CouponAddModal.vue'
 import CouponDelModal from '@/components/CouponDelModal.vue'
 export default {
   components: {
     Pagination,
-    CouponAddModal,
     CouponDelModal
   },
   props: {
@@ -63,6 +117,7 @@ export default {
     return {
       coupons: {},
       tempCoupon: {
+        id: '',
         title: '',
         is_enabled: 0,
         percent: 100,
@@ -92,7 +147,7 @@ export default {
         vm.tempCoupon = {}
       } else {
         vm.tempCoupon = { ...item }
-        const dateAndTime = new Date(vm.tempCoupon.due_date * 1000).toISOString().split('T')
+        const dateAndTime = new Date(vm.due_date * 1000).toISOString().split('T')
         vm.due_date = dateAndTime[0]
       }
     },
@@ -115,8 +170,7 @@ export default {
         ajaxMethod = 'put'
       }
       vm.$store.dispatch('updateLoading', true)
-      vm.due_date = new Date(vm.tempCoupon.due_date * 1000)
-      console.log(vm.due_date)
+      vm.due_date = new Date(vm.due_date * 1000)
       vm.$http[ajaxMethod](api, { data: vm.tempCoupon }).then((res) => {
         if (res.data.success) {
           $('#couponModal').modal('hide')

@@ -1,34 +1,34 @@
 <template>
   <div>
     <nav class="navbar navbar-expand-md">
-      <router-link class="navbar-brand" :to="{name:'CustomerHome'}">
+      <router-link class="navbar-brand" :to="{ name:'CustomerHome' }">
         <img src="@/assets/image/Logo.png" width="200" alt="Logo">
       </router-link>
       <button @click="isToggle = !isToggle" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapse_target">
-        <i :class="{'toggle':isToggle}" class="fas fa-bars"></i>
+        <i :class="{ 'toggle':isToggle }" class="fas fa-bars"></i>
       </button>
       <div class="collapse navbar-collapse" id="collapse_target">
         <ul class="navbar-nav ml-auto font-weight-bold">
           <li class="nav-item">
-            <router-link class="nav-link" :to="{name:'CustomerHome'}">
+            <router-link class="nav-link" :to="{ name:'CustomerHome' }">
               <i class="fas fa-home"></i>
               <span class="ml-2">首頁</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{name:'CustomerProduct'}">
+            <router-link class="nav-link" :to="{ name:'CustomerProduct' }">
               <i class="fas fa-shopping-basket"></i>
               <span class="ml-2">所有商品</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{name:'CustomerCart'}">
+            <router-link class="nav-link" :to="{ name:'CustomerCart' }">
               <i class="fas fa-shopping-cart"></i>
               <span class="ml-2">購物車</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{name:'Login'}">
+            <router-link class="nav-link" :to="{ name:'Login' }">
               <i class="fas fa-users-cog"></i>
               <span class="ml-2">管理</span>
             </router-link>
