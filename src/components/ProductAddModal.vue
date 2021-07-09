@@ -24,7 +24,7 @@
                   <label class="font-weight-bold" for="customFile">或 上傳圖片
                     <img v-if="status.filesLoading" width="40" src="@/assets/image/loading-img2.gif">
                   </label>
-                  <input type="file" id="customFile" class="form-control" ref="files" @change="emitUpload">
+                  <input type="file" id="customFile" class="form-control" ref="files" @change="uploadFile">
                 </div>
                 <img :src="temProduct.imageUrl">
               </div>
@@ -96,9 +96,26 @@
 export default {
   props: ['temProduct', 'isNew', 'status'],
   methods: {
-    emitUpload () {
+    uploadFile () {
       const vm = this
-      vm.$emit('imgUpload')
+      const uploadData = vm.$refs.files.files[0]
+      const formData = new FormData()
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`
+      vm.status.filesLoading = true
+      formData.append('file-to-upload', uploadData)
+      vm.$http.post(api, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then((res) => {
+        if (res.data.success) {
+          vm.$set(vm.temProduct, 'imageUrl', res.data.imageUrl)
+          vm.$bus.$emit('message:push', '上傳成功', 'success')
+        } else {
+          vm.$bus.$emit('message:push', '上傳失敗', 'danger')
+        }
+        vm.status.filesLoading = false
+      })
     },
     emitAddProduct () {
       const vm = this
