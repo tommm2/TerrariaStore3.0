@@ -19,10 +19,15 @@
                 <h6 class="font-weight-bold">商品介紹</h6>
                 <p class="product-text">{{product.description}}</p>
               </div>
-              <div class="product-demo w-100">
+              <div class="product-demo d-md-block d-sm-none w-100">
                 <h6 class="font-weight-bold">商品示範</h6>
                 <div v-for="(item, index) in demo" :key="index">
-                    <img v-if="product.title === item.title" :src="item.url">
+                    <div v-if="item.url !== ''">
+                      <img v-if="product.title === item.title" :src="item.url">
+                    </div>
+                    <div v-if="item.url === ''">
+                      <p style="font-size: 25px;" class="p-3 text-light d-flex justify-content-center" v-if="product.title === item.title">暫不提供</p>
+                    </div>
                 </div>
               </div>
             </div>
@@ -111,19 +116,19 @@ export default {
         },
         {
           title: '機器人套裝',
-          url: '暫無提供'
+          url: ''
         },
         {
           title: 'Toro套裝',
-          url: '暫無提供'
+          url: ''
         },
         {
           title: '苦力怕套裝',
-          url: '暫無提供'
+          url: ''
         },
         {
           title: '蘑菇套裝',
-          url: '暫無提供'
+          url: ''
         }
       ]
     }
