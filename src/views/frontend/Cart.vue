@@ -41,8 +41,8 @@
                   </tbody>
                 </table>
               </div>
-              <div v-else class="no-item-res text-white text-center pt-3 font-weight-bold">
-                <i class="fas fa-cart-arrow-down mr-2"></i>空無一物的購物車
+              <div v-else class="no-item-res text-white text-center pt-3">
+                <i class="fas fa-cart-arrow-down mr-2"></i>您的購物車為空
               </div>
               <div class="price pt-3  d-flex justify-content-around font-weight-bold">
                 <p class="text-muted">總計 {{ cart.total | currency }}</p>
